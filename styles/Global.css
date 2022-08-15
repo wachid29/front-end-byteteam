@@ -1,0 +1,266 @@
+/* Custom Fonts */
+* {
+	font-family: "Poppins", sans-serif;
+}
+
+/* Custom Color */
+:root {
+	--brand-lightblue: #41a4ff;
+	--brand-blue: #2395ff;
+	--brand-lightgreen: #6dda6b;
+	--brand-green: #4fcf4d;
+	--brand-purple: #7861d7;
+	--brand-lightorange: #ff7f23;
+	--brand-orange: #e45d32;
+	--brand-red: #f24545;
+	--brand-light: #e6e6e6;
+	--brand-lightgray: #a5a5a5;
+	--brand-gray: #979797;
+	--brand-darkgray: #595959;
+}
+
+/* Custom Font Weight */
+.fw-thin {
+	font-weight: 100;
+}
+
+.fw-extralight {
+	font-weight: 200;
+}
+
+.fw-light {
+	font-weight: 300;
+}
+
+.fw-normal {
+	font-weight: 400;
+}
+
+.fw-medium {
+	font-weight: 500;
+}
+
+.fw-semibold {
+	font-weight: 600;
+}
+
+.fw-bold {
+	font-weight: 700;
+}
+
+.fw-extrabold {
+	font-weight: 800;
+}
+
+.fw-black {
+	font-weight: 900;
+}
+
+/* Custom Text Color */
+.text-lightblue {
+	color: var(--brand-lightblue);
+}
+
+.text-blue {
+	color: var(--brand-blue);
+}
+
+.text-lightgreen {
+	color: var(--brand-lightgreen);
+}
+
+.text-green {
+	color: var(--brand-green);
+}
+
+.text-purple {
+	color: var(--brand-purple);
+}
+
+.text-lightorange {
+	color: var(--brand-lightorange);
+}
+
+.text-orange {
+	color: var(--brand-orange);
+}
+
+.text-red {
+	color: var(--brand-red);
+}
+
+.text-lightgray {
+	color: var(--brand-lightgray);
+}
+
+.text-gray {
+	color: var(--brand-gray);
+}
+
+.text-darkgray {
+	color: var(--brand-darkgray);
+}
+
+/* Custom Background Color */
+.bg-lightblue {
+	background-color: var(--brand-lightblue);
+}
+
+.bg-blue {
+	background-color: var(--brand-blue);
+}
+
+.bg-lightgreen {
+	background-color: var(--brand-lightgreen);
+}
+
+.bg-green {
+	background-color: var(--brand-green);
+}
+
+.bg-purple {
+	background-color: var(--brand-purple);
+}
+
+.bg-lightorange {
+	background-color: var(--brand-lightorange);
+}
+
+.bg-orange {
+	background-color: var(--brand-orange);
+}
+
+.bg-red {
+	background-color: var(--brand-red);
+}
+
+.bg-lightgray {
+	background-color: var(--brand-lightgray);
+}
+
+.bg-gray {
+	background-color: var(--brand-gray);
+}
+
+.bg-darkgray {
+	background-color: var(--brand-darkgray);
+}
+
+/* Custom Font Size */
+.fs-12 {
+	font-size: 12px;
+}
+
+.fs-14 {
+	font-size: 14px;
+}
+
+.fs-16 {
+	font-size: 16px;
+}
+
+.fs-18 {
+	font-size: 18px;
+}
+
+.fs-20 {
+	font-size: 20px;
+}
+
+.fs-22 {
+	font-size: 22px;
+}
+
+.fs-24 {
+	font-size: 24px;
+}
+
+.fs-26 {
+	font-size: 26px;
+}
+
+.fs-28 {
+	font-size: 28px;
+}
+
+.fs-30 {
+	font-size: 30px;
+}
+
+.fs-32 {
+	font-size: 32px;
+}
+
+.fs-34 {
+	font-size: 34px;
+}
+
+.fs-36 {
+	font-size: 36px;
+}
+
+/* Custom Button */
+.btn-lightblue {
+	color: white;
+	background-color: var(--brand-lightblue);
+}
+
+.btn-blue {
+	color: white;
+	background-color: var(--brand-blue);
+	border: none;
+	box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);
+}
+.btn-blue:focus {
+	color: white;
+	background-color: #1679d6;
+	border: none;
+	box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);
+}
+.btn-blue:hover {
+	color: white;
+	background-color: #41a4ff;
+	border: none;
+	box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);
+}
+
+.btn-lightgreen {
+	background-color: var(--brand-lightgreen);
+}
+
+.btn-green {
+	background-color: var(--brand-green);
+}
+
+.btn-purple {
+	background-color: var(--brand-purple);
+}
+
+.btn-lightorange {
+	background-color: var(--brand-lightorange);
+}
+
+.btn-orange {
+	background-color: var(--brand-orange);
+}
+
+.btn-red {
+	background-color: var(--brand-red);
+}
+
+.btn-lightgray {
+	background-color: var(--brand-lightgray);
+}
+
+.btn-gray {
+	background-color: var(--brand-gray);
+}
+
+.btn-darkgray {
+	background-color: var(--brand-darkgray);
+}
+
+/* Custom Cursor */
+.cursor-pointer {
+	cursor: pointer;
+}
