@@ -1,0 +1,10 @@
+.bg-layout-navbar {
+	background: linear-gradient(180deg, rgba(247, 247, 247, 0) 0%, var(--brand-light) 150%);
+}
+
+.dot-badge {
+	border: 2.5px solid white;
+	right: 0;
+	width: 15px;
+	height: 15px;
+}

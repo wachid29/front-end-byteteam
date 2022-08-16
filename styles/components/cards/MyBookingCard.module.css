@@ -1,0 +1,14 @@
+.border-spacer {
+	border-top: 1px solid var(--brand-light);
+}
+
+.zigzag {
+	border-radius: 12px;
+	--mask: conic-gradient(from -65deg at bottom, #0000, #000 1deg 129deg, #0000 130deg) 50%/77.2px 100%;
+	-webkit-mask: var(--mask);
+	mask: var(--mask);
+}
+
+.container {
+	filter: drop-shadow(0px 2px 4px rgba(14, 63, 108, 0.19));
+}
