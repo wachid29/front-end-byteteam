@@ -1,10 +1,10 @@
-.border-spacer {
+.borderSpacer {
 	border-top: 1px solid var(--brand-light);
 }
 
 .zigzag {
 	border-radius: 12px;
-	--mask: conic-gradient(from -65deg at bottom, #0000, #000 1deg 129deg, #0000 130deg) 50%/77.2px 100%;
+	--mask: conic-gradient(from -62.5deg at bottom, #0000, #000 1deg 124deg, #0000 125deg) 50%/115.26px 100.2%;
 	-webkit-mask: var(--mask);
 	mask: var(--mask);
 }

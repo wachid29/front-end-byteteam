@@ -1,13 +1,11 @@
-import { FreeMode } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
-
 // Styles + Icons
-import "swiper/css/bundle";
-import styles from "@styles/pages/FlightDetail.module.css";
+import { flightInfo } from "@styles/pages/FlightDetail.module.css";
+import { zigzag } from "@styles/components/Cards.module.css";
 
 // Components
 import LayoutBgPlane from "@components/layouts/LayoutBgPlane";
 import FlightDestination from "@components/pages/FlightDestination";
+import FlightAirlineLogo from "@components/pages/FlightAirlineLogo";
 import FlightInfo from "@components/pages/FlightInfo";
 import FlightPassanger from "@components/pages/FlightPassanger";
 import FlightFacilities from "@components/pages/FlightFacilities";
@@ -16,12 +14,15 @@ import FlightCost from "@components/pages/FlightCost";
 export default function FlightDetail() {
 	return (
 		<LayoutBgPlane title="Flight Detail - Ticketing Website">
-			<div className={"d-flex flex-column bg-white position-relative mb-4 " + styles["flight-info"]}>
-				<div className="d-flex flex-column px-4 pt-5 pb-4 gap-5">
-					<FlightDestination />
-					<FlightInfo />
+			<div className={flightInfo}>
+				<div className={`d-flex flex-column bg-white mb-4 py-5 ${zigzag}`}>
+					<div className="d-flex flex-column px-4 pb-4 gap-5">
+						<FlightDestination hasTime />
+						<FlightAirlineLogo width={75} />
+						<FlightInfo />
+					</div>
+					<FlightPassanger />
 				</div>
-				<FlightPassanger />
 			</div>
 			<FlightFacilities />
 			<FlightCost />

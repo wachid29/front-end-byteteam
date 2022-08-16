@@ -8,7 +8,7 @@ export default function MyBooking() {
 			<div className="d-flex flex-column gap-4 mb-5">
 				<MyBookingCard status="waiting" />
 				<MyBookingCard status="success" />
-				{/* <MyBookingCard status="cancel" /> */}
+				<MyBookingCard status="cancel" />
 			</div>
 		</LayoutNavbar>
 	);
