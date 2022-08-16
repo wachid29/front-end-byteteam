@@ -17,9 +17,7 @@ export default function MyBookingCard({ status }) {
 				</div>
 				<div className={"d-flex align-items-center justify-content-between p-4 pb-5 " + styles["border-spacer"]}>
 					<span className="fs-14 fw-semibold text-darkgray">Status</span>
-					{status === "waiting" && (
-						<div className="bg-lightorange fs-14 fw-semibold text-white py-2 px-3 rounded-3">Waiting for payment</div>
-					)}
+					{status === "waiting" && <div className="bg-lightorange fs-14 fw-semibold text-white py-2 px-3 rounded-3">Waiting for payment</div>}
 					{status === "cancel" && <div className="bg-red fs-14 fw-semibold text-white py-2 px-3 rounded-3">Canceled</div>}
 					{status === "success" && <div className="bg-green fs-14 fw-semibold text-white py-2 px-3 rounded-3">E-ticket issued</div>}
 				</div>
