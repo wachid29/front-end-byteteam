@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import imgSplash from "../../public/images/splash.png";
-import splashStyle from "../../styles/pages/splash.module.css";
+import imgSplash from "../public/images/splash.png";
+import splashStyle from "../styles/pages/splash.module.css";
 
 const splash = () => {
 	return (

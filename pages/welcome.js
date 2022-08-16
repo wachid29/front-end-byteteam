@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import imgWelcome from "../../public/images/welcome.png";
-import welcomeStyle from "../../styles/pages/welcome.module.css";
+import imgWelcome from "../public/images/welcome.png";
+import welcomeStyle from "../styles/pages/welcome.module.css";
 
 const start = () => {
 	return (
