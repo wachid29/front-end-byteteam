@@ -1,0 +1,13 @@
+.main {
+  overflow-x: hidden;
+  
+}
+
+.splashWrapper {
+  background-color: #2395FF;
+  min-height: 100vh;
+}
+
+.splashImg {
+  margin-top: 50%;
+}
