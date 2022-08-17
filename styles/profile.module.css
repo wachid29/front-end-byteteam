@@ -21,3 +21,93 @@
     
         color: #2395FF;
 }
+
+.contentEdit {
+    overflow-x: hidden;
+}
+
+.contentTitle p {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 36px;
+    color: #414141;
+}
+
+.textProfileTop p {
+    font-family: 'Poppins',sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    color: #2395FF;
+    margin-bottom: 0px;
+}
+
+.textProfileBtm p {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    color: #000000;
+    margin-bottom: 0px;
+}
+
+.textTitleForm p {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    color: #000000;
+    margin-bottom: 0px;
+}
+
+.formInput label {
+    font-family: 'Lato', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #9B96AB;
+    margin-bottom: 0px;
+}
+
+.formInput input {
+    height: 50px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0%;
+}
+
+.formInput select {
+    height: 50px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0%;
+}
+
+.textAccount p {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: right;
+    color: #2395FF;
+    margin-bottom: 0px;
+    margin-top: 3px;
+}
+
+.btnSave button{
+    height: 50px;
+    width: 150px;
+    background: #2395FF;
+    box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);
+    border-radius: 10px;
+    color:#FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 27px;
+  }
