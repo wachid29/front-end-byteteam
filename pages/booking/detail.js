@@ -14,7 +14,7 @@ export default function BookingDetail() {
 	return (
 		<LayoutBgBlue title="Booking Detail - Ticketing Website" pageTitle="Booking Pass">
 			<div className={container}>
-				<div className={`d-flex flex-column bg-white ${zigzag}`}>
+				<div className={`d-flex flex-column bg-white pb-4 ${zigzag}`}>
 					<div className="d-flex flex-column justify-content-center p-5 pb-4 gap-4">
 						<FlightAirlineLogo width={100} justify="center" />
 						<FlightDestination fontSize={26} justify="evenly" />

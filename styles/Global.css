@@ -17,6 +17,7 @@
 	--brand-lightgray: #a5a5a5;
 	--brand-gray: #979797;
 	--brand-darkgray: #595959;
+	--mask: conic-gradient(from -67.5deg at bottom, #0000, #000 1deg 134deg, #0000 135deg) 50%/101.4px 100.3%;
 }
 
 /* Custom Font Weight */
