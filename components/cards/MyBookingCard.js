@@ -1,3 +1,8 @@
+import NextLink from "next/link";
+import useSWR from "swr";
+import fetcher from "@utils/axios/fetcher";
+import moment from "moment";
+
 // Styles + Icons
 import { container, zigzag, borderSpacer } from "@styles/components/Cards.module.css";
 import { FaPlaneDeparture } from "react-icons/fa";
@@ -5,24 +10,33 @@ import { FaPlaneDeparture } from "react-icons/fa";
 // Components
 import BookingStatus from "@components/pages/BookingStatus";
 
-export default function MyBookingCard({ status }) {
+export default function MyBookingCard(props) {
+	const { booking } = props;
+	const { data: ticket, error } = useSWR("ticket", () => fetcher.findOneticket(booking?.id_ticket));
+
 	return (
-		<div className={container}>
-			<div className={`d-flex flex-column bg-white ${zigzag}`}>
-				<div className="d-flex flex-column p-4 gap-2">
-					<span className="fs-14 fw-normal">Monday, 20 July &apos;20 - 12:33</span>
-					<div className="d-flex align-items-center gap-4">
-						<span className="fs-20 fw-semibold">IDN</span>
-						<FaPlaneDeparture size={18} className="text-gray" />
-						<span className="fs-20 fw-semibold">JPN</span>
+		<NextLink href={`/booking/${booking?.id_booking}`}>
+			<div className={`cursor-pointer ${container}`}>
+				<div className={`d-flex flex-column bg-white ${zigzag}`}>
+					<div className="d-flex flex-column p-4 gap-2">
+						<span className="fs-14 fw-normal">
+							{moment(ticket?.from_date).format("dddd, DD MMMM 'YY")} - {ticket?.from_time.split(":").splice(0, 2).join(":")}
+						</span>
+						<div className="d-flex align-items-center gap-4">
+							<span className="fs-20 fw-semibold">{ticket?.place1[0]?.city_code}</span>
+							<FaPlaneDeparture size={18} className="text-gray" />
+							<span className="fs-20 fw-semibold">{ticket?.place2[0]?.city_code}</span>
+						</div>
+						<span className="fs-14 fw-normal text-gray">
+							{ticket?.name}, {ticket?.code_airplane}
+						</span>
 					</div>
-					<span className="fs-14 fw-normal text-gray">Garuda Indonesia, AB-221</span>
-				</div>
-				<div className={`d-flex align-items-center justify-content-between p-4 pb-5 ${borderSpacer}`}>
-					<span className="fs-14 fw-semibold text-darkgray">Status</span>
-					<BookingStatus status={status} />
+					<div className={`d-flex align-items-center justify-content-between p-4 pb-5 ${borderSpacer}`}>
+						<span className="fs-14 fw-semibold text-darkgray">Status</span>
+						<BookingStatus status={booking?.status_payment} />
+					</div>
 				</div>
 			</div>
-		</div>
+		</NextLink>
 	);
 }

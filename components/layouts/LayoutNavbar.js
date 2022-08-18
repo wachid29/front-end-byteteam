@@ -20,7 +20,7 @@ export default function LayoutNavbar(props) {
 				<div className="d-flex justify-content-center min-vh-100">
 					<div className={`d-flex flex-column position-relative align-items-center min-vh-100 mw-mobile ${bgGradientWhite}`}>
 						<div className="d-flex flex-column p-4 pb-5 mb-5 h-100 w-100">
-							<div className="d-flex align-items-center justify-content-between my-3">
+							<div className="d-flex align-items-center justify-content-between mt-3 pb-2 mb-4">
 								<span className="fs-36 fw-semibold">{pageTitle}</span>
 								<ChatNotifBtn hasChat={hasChat} hasNotif={hasNotif} />
 							</div>

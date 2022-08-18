@@ -1,15 +1,30 @@
+import { SWRConfig } from "swr";
+import fetcher from "@utils/axios/fetcher";
+
 // Components
 import LayoutNavbar from "@components/layouts/LayoutNavbar";
-import MyBookingCard from "@components/cards/MyBookingCard";
+import MyBookingList from "@components/lists/MyBookingList";
 
-export default function MyBooking() {
+export default function MyBooking({ fallback }) {
 	return (
 		<LayoutNavbar title="My Booking - Ticketing Website" pageTitle="My Booking" hasChat hasNotif>
 			<div className="d-flex flex-column gap-4 mb-5">
-				<MyBookingCard status="waiting" />
-				<MyBookingCard status="success" />
-				<MyBookingCard status="cancel" />
+				<SWRConfig value={{ fallback }}>
+					<MyBookingList />
+				</SWRConfig>
 			</div>
 		</LayoutNavbar>
 	);
+}
+
+export async function getServerSideProps() {
+	const myBooking = await fetcher.findMyBooking();
+
+	return {
+		props: {
+			fallback: {
+				["myBooking"]: myBooking,
+			},
+		},
+	};
 }
