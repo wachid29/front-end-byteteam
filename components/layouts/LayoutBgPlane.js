@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 // Styles + Icons
 import { bgPlane } from "@styles/components/Layouts.module.css";
@@ -6,6 +7,7 @@ import { FaAngleLeft } from "react-icons/fa";
 
 export default function LayoutBgPlane(props) {
 	const { title, children } = props;
+	const router = useRouter();
 
 	return (
 		<div>
@@ -18,7 +20,7 @@ export default function LayoutBgPlane(props) {
 					<div className="d-flex flex-column position-relative align-items-center mw-mobile">
 						<div className={`w-100 position-absolute ${bgPlane}`}></div>
 						<div className="d-flex flex-column p-4 h-100 w-100">
-							<FaAngleLeft className="text-white cursor-pointer my-3 mb-4" size={30} />
+							<FaAngleLeft className="text-white cursor-pointer my-3 mb-4" size={30} onClick={() => router.back()} />
 							{children}
 						</div>
 					</div>
