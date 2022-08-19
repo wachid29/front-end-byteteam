@@ -12,26 +12,26 @@ import FlightDestination from "@components/pages/FlightDestination";
 import FlightInfo from "@components/pages/FlightInfo";
 import BookingQrCode from "@components/pages/BookingQrCode";
 
-export default function BookingDetail({ ticket }) {
+export default function BookingDetail({ booking }) {
 	return (
-		<LayoutBgBlue title="Booking Detail - Ticketing Website" pageTitle="Booking Pass">
+		<LayoutBgBlue title="Booking Detail - bookinging Website" pageTitle="Booking Pass">
 			<div className={container}>
 				<div className={`d-flex flex-column bg-white pb-4 ${zigzag}`}>
 					<div className="d-flex flex-column justify-content-center p-5 pb-4 gap-4">
-						<FlightAirlineLogo width={100} justify="center" src={ticket?.logo} />
-						<FlightDestination fontSize={26} justify="evenly" from={ticket?.place1[0]} to={ticket?.place2[0]} />
+						<FlightAirlineLogo width={100} justify="center" src={booking?.logo} />
+						<FlightDestination fontSize={26} justify="evenly" from={booking?.place1[0]} to={booking?.place2[0]} />
 						<div className="d-flex justify-content-center">
 							<BookingStatus status="success" />
 						</div>
 					</div>
 					<div className={`d-flex flex-column justify-content-center p-5 pt-4 gap-4 ${borderSpacer}`}>
 						<FlightInfo
-							code_airplane={ticket?.code_airplane}
-							class_flight={ticket?.class_flight}
-							from_terminal={ticket?.from_terminal}
-							from_gate={ticket?.from_gate}
+							code_airplane={booking?.code_airplane}
+							class_flight={booking?.class_flight}
+							from_terminal={booking?.from_terminal}
+							from_gate={booking?.from_gate}
 						/>
-						<BookingDeparture from_date={ticket?.from_date} from_time={ticket?.from_time} />
+						<BookingDeparture from_date={booking?.from_date} from_time={booking?.from_time} />
 						<BookingQrCode width={186} />
 					</div>
 				</div>
@@ -41,7 +41,12 @@ export default function BookingDetail({ ticket }) {
 }
 
 export async function getServerSideProps({ query }) {
-	const ticket = await fetcher.findOneticket(query.id_ticket);
+	const booking = await fetcher.findOneBooking(query.id);
+	const { logo } = await fetcher.findOneticket(booking?.id_ticket);
 
-	return { props: { ticket } };
+	return {
+		props: {
+			booking: { ...booking, logo },
+		},
+	};
 }

@@ -44,5 +44,11 @@ export async function getServerSideProps({ query }) {
 	const { id, peopleChild, peopleAdult } = query;
 	const ticket = await fetcher.findOneticket(id);
 
-	return { props: { ticket, child: peopleChild, adults: peopleAdult } };
+	return {
+		props: {
+			ticket,
+			child: peopleChild,
+			adults: peopleAdult,
+		},
+	};
 }

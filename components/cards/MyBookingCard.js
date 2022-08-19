@@ -9,16 +9,16 @@ import { FaPlaneDeparture } from "react-icons/fa";
 
 // Components
 import BookingStatus from "@components/pages/BookingStatus";
-import GlobeLoading from "@components/loading/GlobeLoading";
+import BookingLoading from "@components/loading/BookingLoading";
 
 export default function MyBookingCard(props) {
 	const { booking } = props;
 	const { data: ticket, error } = useSWR("ticket", () => fetcher.findOneticket(booking?.id_ticket));
 
-	if (!ticket) return <GlobeLoading />;
+	if (!ticket) return <BookingLoading />;
 	if (booking?.status_payment === "issue")
 		return (
-			<NextLink href={`/booking/${booking?.id_booking}?id_ticket=${booking?.id_ticket}`}>
+			<NextLink href={`/booking/${booking?.id_booking}`}>
 				<div className={`cursor-pointer ${container}`}>
 					<div className={`d-flex flex-column bg-white ${zigzag}`}>
 						<div className="d-flex flex-column p-4 gap-2">
