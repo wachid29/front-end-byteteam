@@ -9,10 +9,13 @@ import { FaPlaneDeparture } from "react-icons/fa";
 
 // Components
 import BookingStatus from "@components/pages/BookingStatus";
+import GlobeLoading from "@components/loading/GlobeLoading";
 
 export default function MyBookingCard(props) {
 	const { booking } = props;
 	const { data: ticket, error } = useSWR("ticket", () => fetcher.findOneticket(booking?.id_ticket));
+
+	if (!ticket) return <GlobeLoading />;
 
 	return (
 		<NextLink href={`/booking/${booking?.id_booking}`}>
