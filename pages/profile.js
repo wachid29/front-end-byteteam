@@ -1,10 +1,54 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import profileStyle from "../styles/profile.module.css";
 import Link from "next/link";
 import { MdSettings, MdLogout, MdArrowForwardIos } from "react-icons/md";
 import { BsFillStarFill } from "react-icons/bs";
+import { useRouter } from "next/router";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 function Profile() {
+	const [profile, setProfile] = useState([]);
+	const [dataUserStorage, setDataUserStorage] = useState({});
+	const [tokenStorage, setTokenStorage] = useState({});
+	const router = useRouter();
+
+	useEffect(() => {
+		setDataUserStorage(JSON.parse(localStorage?.getItem("datas")));
+		setTokenStorage(localStorage?.getItem("token"));
+		getProfile();
+	}, [dataUserStorage?.fullname]);
+
+	const config = {
+		headers: {
+			Authorization: `Bearer ${tokenStorage}`,
+		},
+	};
+
+	const getProfile = () => {
+		const idUser = dataUserStorage?.id;
+		if (idUser) {
+			console.log(idUser);
+			axios
+				.get(`https://ticket-byte-v1.herokuapp.com/user/getbyid/${idUser}`, config)
+				.then((res) => {
+					console.log(res?.data[0]);
+					setProfile(res?.data[0]);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	};
+
+	const handleLogout = () => {
+		localStorage.clear();
+		Swal.fire({
+			icon: "success",
+			text: "You have logged out",
+		}).then((result) => (result.isConfirmed ? router.push("/") : null));
+	};
+
 	return (
 		<>
 			<section>
@@ -18,7 +62,7 @@ function Profile() {
 					<div className="d-flex justify-content-center text-center">
 						<div className="card mb-3" style={{ borderRadius: "50%", borderColor: "#2395FF", borderWidth: "5px" }}>
 							<img
-								src="/images/photo_profile.png"
+								src={profile?.photo}
 								className="card-img-bottom"
 								alt="photo profile"
 								width="100px"
@@ -28,7 +72,7 @@ function Profile() {
 						</div>
 					</div>
 					<div className="text-center">
-						<h4>Mike Kowalski</h4>
+						<h4>{profile?.fullname}</h4>
 						<p>Medan, Indonesia</p>
 					</div>
 
@@ -57,11 +101,7 @@ function Profile() {
 								</span>
 								<h6 className="col-4 pt-1">My Review</h6>
 								<div className="col-6 d-flex justify-content-end">
-									<Link href="/editProfile" passHref>
-										<a>
-											<MdArrowForwardIos style={{ color: "#979797" }} />
-										</a>
-									</Link>
+									<MdArrowForwardIos style={{ color: "#979797" }} />
 								</div>
 							</div>
 							<div className="row mb-2">
@@ -70,11 +110,7 @@ function Profile() {
 								</span>
 								<h6 className="col-4 pt-1">Settings</h6>
 								<div className="col-6 d-flex justify-content-end">
-									<Link href="/editProfile" passHref>
-										<a>
-											<MdArrowForwardIos style={{ color: "#979797" }} />
-										</a>
-									</Link>
+									<MdArrowForwardIos style={{ color: "#979797" }} />
 								</div>
 							</div>
 							<div className="row mb-2">
@@ -85,11 +121,9 @@ function Profile() {
 									LogOut
 								</h6>
 								<div className="col-6 d-flex justify-content-end">
-									<Link href="/editProfile" passHref>
-										<a style={{ color: "#F24545" }}>
-											<MdArrowForwardIos />
-										</a>
-									</Link>
+									<a style={{ color: "#F24545", cursor: "pointer" }}>
+										<MdArrowForwardIos onClick={handleLogout} />
+									</a>
 								</div>
 							</div>
 						</div>

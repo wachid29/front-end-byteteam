@@ -37,13 +37,17 @@ const editProfile = () => {
 									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
 										Email
 									</label>
-									<input className="form-control form-control-sm py-0 px-3" type="email" placeholder="flightbooking@angkasa.com" />
+									<input
+										className="form-control form-control-sm shadow-none py-0 px-3"
+										type="email"
+										placeholder="flightbooking@angkasa.com"
+									/>
 								</div>
 								<div className={`px-3 ${profileStyle.formInput}`}>
 									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
 										Phone Number
 									</label>
-									<input className="form-control form-control-sm py-0 px-3" type="text" placeholder="+6281987654321" />
+									<input className="form-control form-control-sm shadow-none py-0 px-3" type="text" placeholder="+6281987654321" />
 								</div>
 								<div className="row mt-3 mx-0">
 									<div className={`col-11 px-0 ${profileStyle.textAccount} `}>
@@ -60,13 +64,13 @@ const editProfile = () => {
 									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
 										Username
 									</label>
-									<input className="form-control form-control-sm py-0 px-3" type="text" placeholder="Mike Kowalski" />
+									<input className="form-control form-control-sm py-0 shadow-none px-3" type="text" placeholder="Mike Kowalski" />
 								</div>
 								<div className={`px-3 ${profileStyle.formInput}`}>
 									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
 										City
 									</label>
-									<select className="form-select px-3" id="sel1">
+									<select className="form-select shadow-none px-3" id="sel1">
 										<option>Medan</option>
 										<option>Tangerang</option>
 										<option>Bogor</option>
@@ -77,13 +81,13 @@ const editProfile = () => {
 									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
 										Address
 									</label>
-									<input className="form-control form-control-sm py-0 px-3" type="text" placeholder="Medan, Indonesia" />
+									<input className="form-control form-control-sm shadow-none py-0 px-3" type="text" placeholder="Medan, Indonesia" />
 								</div>
 								<div className={`px-3 ${profileStyle.formInput}`}>
 									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
 										Post Code
 									</label>
-									<input className="form-control form-control-sm py-0 px-3" type="text" placeholder="55555" />
+									<input className="form-control form-control-sm py-0 shadow-none px-3" type="text" placeholder="55555" />
 								</div>
 								<div className={`d-grid gap-2 my-4 d-md-flex justify-content-end ${profileStyle.btnSave}`}>
 									<button className="btn" type="button">

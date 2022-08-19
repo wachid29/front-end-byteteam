@@ -1,7 +1,9 @@
 .main {
   overflow-x: hidden;
 }
-
+.btnBack {
+  cursor: pointer;
+}
 .textLogin p {
   font-family: 'Poppins', sans-serif;
   font-style: normal;
