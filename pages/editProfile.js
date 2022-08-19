@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import profileStyle from "../styles/profile.module.css";
 import Image from "next/image";
 import imgPlane from "../public/images/plane.png";

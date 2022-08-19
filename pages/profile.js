@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import profileStyle from "../styles/profile.module.css";
 import Link from "next/link";
 import { MdSettings, MdLogout, MdArrowForwardIos } from "react-icons/md";
@@ -6,33 +6,25 @@ import { BsFillStarFill } from "react-icons/bs";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { ProfileContext } from "../context";
 
 function Profile() {
 	const [profile, setProfile] = useState([]);
-	const [dataUserStorage, setDataUserStorage] = useState({});
-	const [tokenStorage, setTokenStorage] = useState({});
+	const dataUser = useContext(ProfileContext);
 	const router = useRouter();
 
 	useEffect(() => {
-		setDataUserStorage(JSON.parse(localStorage?.getItem("datas")));
-		setTokenStorage(localStorage?.getItem("token"));
+		localStorage;
 		getProfile();
-	}, [dataUserStorage?.fullname]);
-
-	const config = {
-		headers: {
-			Authorization: `Bearer ${tokenStorage}`,
-		},
-	};
+	}, []);
 
 	const getProfile = () => {
-		const idUser = dataUserStorage?.id;
+		const idUser = dataUser?.id;
 		if (idUser) {
 			console.log(idUser);
 			axios
-				.get(`https://ticket-byte-v1.herokuapp.com/user/getbyid/${idUser}`, config)
+				.get(`https://ticket-byte-v1.herokuapp.com/user/getbyid/${idUser}`)
 				.then((res) => {
-					console.log(res?.data[0]);
 					setProfile(res?.data[0]);
 				})
 				.catch((err) => {
@@ -78,9 +70,7 @@ function Profile() {
 
 					<div className="d-flex justify-content-between align-items-center mt-4 mb-1">
 						<h6>Card</h6>
-						<Link href="/editProfile" passHref>
-							<a>+ Add</a>
-						</Link>
+						<a>+ Add</a>
 					</div>
 					<div
 						className="card text-bg-primary mb-4"
