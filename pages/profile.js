@@ -21,7 +21,6 @@ function Profile() {
 	const getProfile = () => {
 		const idUser = dataUser?.id;
 		if (idUser) {
-			console.log(idUser);
 			axios
 				.get(`https://ticket-byte-v1.herokuapp.com/user/getbyid/${idUser}`)
 				.then((res) => {
@@ -51,6 +50,7 @@ function Profile() {
 							<a>Edit</a>
 						</Link>
 					</div>
+
 					<div className="d-flex justify-content-center text-center">
 						<div className="card mb-3" style={{ borderRadius: "50%", borderColor: "#2395FF", borderWidth: "5px" }}>
 							<img
@@ -65,7 +65,9 @@ function Profile() {
 					</div>
 					<div className="text-center">
 						<h4>{profile?.fullname}</h4>
-						<p>Medan, Indonesia</p>
+						<p>
+							{profile?.city} <span>{profile?.country}</span>
+						</p>
 					</div>
 
 					<div className="d-flex justify-content-between align-items-center mt-4 mb-1">
@@ -119,6 +121,7 @@ function Profile() {
 						</div>
 					</div>
 				</div>
+				;
 			</section>
 		</>
 	);
