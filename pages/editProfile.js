@@ -4,6 +4,7 @@ import Image from "next/image";
 import imgPlane from "../public/images/plane.png";
 import { RiAlignRight } from "react-icons/ri";
 import { IoIosArrowForward } from "react-icons/io";
+import { MdOutlineAddAPhoto } from "react-icons/md";
 import { ProfileContext } from "../context";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -13,6 +14,8 @@ const editProfile = () => {
 	const [profile, setProfile] = useState([]);
 	const [place, setPlace] = useState([]);
 	const dataUser = useContext(ProfileContext);
+	const [titleImage, setTitleImage] = useState("Edit Profile Image");
+	const [image, setImage] = useState({});
 	const [email, setEmail] = useState("");
 	const [phoneNumber, setPhoneNumber] = useState();
 	const [fullname, setFullname] = useState("");
@@ -53,6 +56,46 @@ const editProfile = () => {
 			});
 	};
 
+	const handleUpload = (e) => {
+		e.preventDefault();
+		let uploadedImage = e.target.files[0];
+		let nameImage = e.target?.files[0]?.name;
+		setTitleImage(nameImage);
+		setImage(uploadedImage);
+	};
+	const handleUploadProfile = (e) => {
+		e.preventDefault();
+		setIsLoading(true);
+
+		const formData = new FormData();
+		formData.append("id", dataUser?.id);
+		formData.append("photo", image);
+
+		const config = {
+			headers: {
+				"Content-Type": "multipart/form-data; ",
+			},
+		};
+		axios
+			.patch(`https://ticket-byte-v1.herokuapp.com/user/photo`, formData, config)
+			.then((res) => {
+				Swal.fire({
+					icon: "success",
+					text: "Edit Profile Success",
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+				Swal.fire({
+					icon: "error",
+					text: `${err?.response?.data}`,
+				});
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
+	};
+
 	const handleUpdateProfile = (e) => {
 		e.preventDefault();
 		setIsLoading(true);
@@ -85,8 +128,6 @@ const editProfile = () => {
 			});
 	};
 
-	console.log("id place", idPlace);
-
 	return (
 		<>
 			<div className="container">
@@ -110,6 +151,22 @@ const editProfile = () => {
 							<div className={`row mt-2 mx-2 ${profileStyle.textProfileBtm}`}>
 								<p>Profile</p>
 							</div>
+							<form onSubmit={handleUploadProfile}>
+								<div className="row mx-3">
+									<input type="file" id="upload" hidden onChange={handleUpload} />
+									<label className={profileStyle.labelUpload} for="upload">
+										<div className={profileStyle.iconUpload}>
+											<MdOutlineAddAPhoto size={20} color="#2395FF" />
+											<p>{titleImage}</p>
+										</div>
+									</label>
+								</div>
+								<div className={`d-grid gap-2 my-4 px-3 d-md-flex justify-content-end ${profileStyle.btnSave}`}>
+									<button className="btn" type="submit" disabled={isLoading}>
+										{isLoading ? "Loading..." : "Save"}
+									</button>
+								</div>
+							</form>
 							<div className={`row mt-5 mx-2 ${profileStyle.textTitleForm}`}>
 								<p>Contact</p>
 							</div>
@@ -194,7 +251,7 @@ const editProfile = () => {
 										onChange={(e) => setPostCode(e.target.value)}
 									/>
 								</div>
-								<div className={`d-grid gap-2 my-4 d-md-flex justify-content-end ${profileStyle.btnSave}`}>
+								<div className={`d-grid gap-2 my-4 px-3 d-md-flex justify-content-end ${profileStyle.btnSave}`}>
 									<button className="btn" type="submit" disabled={isLoading}>
 										{isLoading ? "Loading..." : "Save"}
 									</button>
