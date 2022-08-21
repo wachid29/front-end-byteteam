@@ -23,7 +23,7 @@ function NavBottom() {
 					</li>
 					{/* Destination */}
 					<li className="nav-item">
-						<Link href="/destination" passHref>
+						<Link href="/destination/searchFlight" passHref>
 							<a className="nav-link text-primary">
 								<FaCompass size="4rem" className={styles.d_icon} />
 							</a>
