@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 // Fonts
 import "@fontsource/poppins/100.css";
 import "@fontsource/poppins/200.css";
@@ -15,6 +17,9 @@ import "swiper/css/bundle";
 import "@styles/Global.css";
 
 function MyApp({ Component, pageProps }) {
+	useEffect(() => {
+		import("bootstrap/dist/js/bootstrap.bundle");
+	});
 	return <Component {...pageProps} />;
 }
 

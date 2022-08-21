@@ -1,0 +1,61 @@
+.content {
+	overflow: hidden;
+	min-height: 100vh;
+	margin-top: 70px;
+}
+
+/* Navbar */
+.d_icon {
+	border-radius: 50%;
+	padding: 4px;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* swiper mode 1 */
+.title_card {
+	position: absolute;
+	z-index: 1;
+}
+.title_card span {
+	background-color: rgba(255, 255, 255, 0.41);
+}
+.swiper {
+	width: 206px;
+	height: 262px;
+}
+.swiper_slide {
+	border-radius: 15px;
+	background-color: black;
+}
+.swiper_slide img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	opacity: 0.7;
+}
+/* swiper mode 2 */
+.swiper_2 {
+	width: 206px;
+	height: 262px;
+	border-radius: 15px;
+	background-color: black;
+}
+.swiper_2 img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 15px;
+	opacity: 0.7;
+}
+.swiper_circle {
+	width: 83px;
+	height: 83px;
+}
+.swiper_circle img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.swiper_circle_title {
+	width: 7em;
+}

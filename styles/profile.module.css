@@ -1,0 +1,138 @@
+.main{
+    background-color: #fff;
+    margin: 20px;
+}
+
+.main h2{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 54px;
+    
+    color: #000000;
+}
+
+.main a{
+    font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        text-decoration: none;
+    
+        color: #2395FF;
+}
+
+.contentEdit {
+    overflow-x: hidden;
+}
+
+.iconPlane img {
+    cursor: pointer;
+}
+.contentTitle p {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 36px;
+    color: #414141;
+}
+
+.textProfileTop p {
+    font-family: 'Poppins',sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    color: #2395FF;
+    margin-bottom: 0px;
+}
+
+.textProfileBtm p {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    color: #000000;
+    margin-bottom: 0px;
+}
+
+.labelUpload {
+    background-color: #f6f5f4;
+    padding: 0.5rem;
+    font-family: sans-serif;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    height: 65px;
+    border-radius: 10px;
+}
+
+.iconUpload {
+    text-align: center;
+    position: relative;
+}
+
+.iconUpload p {
+    text-align: center;
+    position: relative;
+    font-size: 12px;
+}
+
+.textTitleForm p {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    color: #000000;
+    margin-bottom: 0px;
+}
+
+.formInput label {
+    font-family: 'Lato', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #9B96AB;
+    margin-bottom: 0px;
+}
+
+.formInput input {
+    height: 50px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0%;
+}
+
+.formInput select {
+    height: 50px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0%;
+}
+
+.textAccount p {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: right;
+    color: #2395FF;
+    margin-bottom: 0px;
+    margin-top: 3px;
+}
+
+.btnSave button{
+    height: 50px;
+    width: 150px;
+    background: #2395FF;
+    box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);
+    border-radius: 10px;
+    color:#FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 27px;
+  }
