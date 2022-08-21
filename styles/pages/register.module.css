@@ -2,6 +2,10 @@
   overflow-x: hidden;
 }
 
+.iconBack {
+  cursor: pointer;
+}
+
 .contentTop p {
   font-family: 'Poppins', sans-serif;
   font-style: normal;

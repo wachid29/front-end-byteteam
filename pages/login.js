@@ -1,12 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
 import { FaFingerprint } from "react-icons/fa";
 import loginStyle from "../styles/pages/login.module.css";
+import { useRouter } from "next/router";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const login = () => {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+	const router = useRouter();
+
+	const handleLogin = () => {
+		setIsLoading(true);
+		axios
+			.post(`https://ticket-byte-v1.herokuapp.com/auth/login`, {
+				email,
+				password,
+			})
+			.then((res) => {
+				localStorage.setItem("token", res?.data?.token);
+				localStorage.setItem("datas", JSON.stringify(res?.data?.datas));
+
+				Swal.fire({
+					icon: "success",
+					text: "login successfully",
+				}).then((result) => (result.isConfirmed ? router.replace("/") : null));
+			})
+			.catch((err) => {
+				Swal.fire({
+					icon: "error",
+					text: err?.response?.data,
+				});
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
+	};
 	return (
 		<>
 			<div className={loginStyle.main}>
@@ -15,7 +49,9 @@ const login = () => {
 						<div className="col-md-4">
 							<div className=" row mt-4">
 								<div className="col-12 mx-2">
-									<IoIosArrowBack size={30} />
+									<div className={loginStyle.btnBack}>
+										<IoIosArrowBack size={30} onClick={() => router.back()} />
+									</div>
 								</div>
 							</div>
 							<div className={`row mt-5 ${loginStyle.textLogin}`}>
@@ -23,19 +59,36 @@ const login = () => {
 									<p>Login</p>
 								</div>
 							</div>
-							<form>
+							<form
+								onSubmit={(e) => {
+									e.preventDefault();
+									handleLogin();
+								}}>
 								<div className={`px-3 ${loginStyle.formInput}`}>
-									<input className="form-control form-control-lg mt-3" type="email" placeholder="Email" />
+									<input
+										className="form-control form-control-lg mt-3 shadow-none"
+										type="email"
+										placeholder="Email"
+										required
+										onChange={(e) => setEmail(e.target.value)}
+									/>
 								</div>
 								<div className={`input-group px-3 ${loginStyle.inputGroup}`}>
-									<input type="password" className="form-control form-control-lg mt-4" id="password" placeholder="Password" />
-									<span className="input-group-text mt-4" id="basic-addon1">
+									<input
+										type="password"
+										className="form-control form-control-lg mt-4 shadow-none"
+										id="password"
+										placeholder="Password"
+										required
+										onChange={(e) => setPassword(e.target.value)}
+									/>
+									<span className="input-group-text mt-4 shadow-none" id="basic-addon1">
 										<MdOutlineRemoveRedEye size={25} color="#2395FF" />
 									</span>
 								</div>
 								<div className={`d-grid gap-2 mt-4 px-3 ${loginStyle.btnLogin}`}>
-									<button className="btn btn-lg" type="button">
-										Sign In
+									<button className="btn btn-lg" type="submit" disabled={isLoading}>
+										{isLoading ? "Loading..." : "Sign In"}
 									</button>
 								</div>
 								<div className={`text-center ${loginStyle.loginFooter}`}>
