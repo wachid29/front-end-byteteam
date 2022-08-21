@@ -218,18 +218,6 @@ const editProfile = () => {
 										onChange={(e) => setFullname(e.target.value)}
 									/>
 								</div>
-
-								{/* <div className={`px-3 ${profileStyle.formInput}`}>
-									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
-										City
-									</label>
-									<input
-										className="form-control form-control-sm shadow-none py-0 px-3"
-										type="text"
-										placeholder={profile?.city}
-										onChange={(e) => setCity(e.target.value)}
-									/>
-								</div> */}
 								<div className={`px-3 ${profileStyle.formInput}`}>
 									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
 										Address
