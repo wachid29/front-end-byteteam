@@ -1,4 +1,7 @@
-import Image from "next/image";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+// import Image from "next/image";
+import axios from "axios";
 // layouts
 import MainLayout from "layouts/MainLayout";
 // swiper
@@ -13,12 +16,23 @@ import { FaSearch } from "react-icons/fa";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
+	// get all place api
+	const [data, setData] = useState([]);
+	useEffect(() => {
+		axios.get("/api/place").then((res) => setData(res.data.place));
+	}, []);
+
+	const [searchDestination, setSearchDestination] = useState({ searchTo: "" });
+	const handleSubmit = (event) => {
+		event.preventDefault();
+	};
+
 	return (
 		<div className={styles.content}>
 			<main className="container">
 				<MainLayout>
 					{/* Input search */}
-					<form>
+					<form onSubmit={handleSubmit}>
 						<div className="input-group mt-4">
 							<input
 								type="text"
@@ -26,10 +40,21 @@ export default function Home() {
 								placeholder="Where you want to go"
 								aria-label="Recipient's username"
 								aria-describedby="button-addon2"
+								value={searchDestination.searchTo.toLowerCase()}
+								onChange={(event) => setSearchDestination({ searchTo: event.target.value })}
 							/>
-							<button className="btn btn-primary px-3" type="submit">
-								<FaSearch />
-							</button>
+							<Link
+								href={{
+									pathname: "/destination/searchFlight",
+									query: {
+										searchDestination: searchDestination.searchTo,
+									},
+								}}
+								passHref>
+								<button className="btn btn-primary px-3" type="submit">
+									<FaSearch />
+								</button>
+							</Link>
 						</div>
 					</form>
 					{/* End input search */}
@@ -45,51 +70,45 @@ export default function Home() {
 						{/* Swiper mode 1 */}
 						<div className="mt-4">
 							<Swiper effect={"cards"} grabCursor={true} modules={[EffectCards]} className={`mySwiper ${styles.swiper}`}>
-								<SwiperSlide className={styles.swiper_slide}>
-									<div className={styles.title_card}>
-										<p className="text-white ms-3 mt-2">Tokyo,</p>
-										<h1 className="text-white ms-3">Japan</h1>
-										<span className="badge rounded-pill fw-bold ms-3 mt-3 px-3 py-2">15 Airlines</span>
-										<p className="text-white ms-3 fixed-bottom">From $100</p>
-									</div>
-									<Image src="/images/image_3.png" width="240%" height="330%" />
-								</SwiperSlide>
-								<SwiperSlide className={styles.swiper_slide}>
-									<Image src="/images/image_2.jpg" width="240%" height="330%" />
-								</SwiperSlide>
-								<SwiperSlide className={styles.swiper_slide}>
-									<Image src="/images/image_3.png" width="240%" height="330%" />
-								</SwiperSlide>
+								{data.map((item) => (
+									<SwiperSlide key={item?.id_place} className={styles.swiper_slide}>
+										<div className={styles.title_card}>
+											<p className="text-white ms-3 mt-2">{item?.city}</p>
+											<h1 className="text-white ms-3">{item?.country}</h1>
+											<span className="badge rounded-pill fw-bold ms-3 mt-3 px-3 py-2">15 Airlines</span>
+											<p className="text-white ms-3 fixed-bottom">From $100</p>
+										</div>
+										{/* domain Image any problem */}
+										{/* <Image src={item?.city_picture} width="240%" height="330%" />  */}
+										<img src={item?.city_picture} alt="Image" />
+									</SwiperSlide>
+								))}
 							</Swiper>
 						</div>
 						{/* End Swiper mode 1 */}
 
 						{/* Swiper mode 2 */}
-						{/* <div>
+						{/*  
+						<div>
 							<Swiper freeMode={true} grabCursor={true} modules={[FreeMode]} className="mySwiper" slidesPerView={2} spaceBetween={120}>
-								<SwiperSlide>
-									<div className={styles.title_card}>
-										<p className="text-white ms-3 mt-2">Tokyo,</p>
-										<h1 className="text-white ms-3">Japan</h1>
-										<span className="badge rounded-pill fw-bold ms-3 mt-3 px-3 py-2">15 Airlines</span>
-										<p className="text-white ms-3 fixed-bottom">From $100</p>
-									</div>
-									<div className={`card ${styles.swiper_2}`}>
-										<Image src="/images/image_3.png" alt="logo" width="100%" height="330%" />
-									</div>
-								</SwiperSlide>
-								<SwiperSlide>
-									<div className={`card ${styles.swiper_2}`}>
-										<Image src="/images/image_3.png" alt="logo" width="100%" height="330%" />
-									</div>
-								</SwiperSlide>
-								<SwiperSlide>
-									<div className={`card ${styles.swiper_2}`}>
-										<Image src="/images/image_3.png" alt="logo" width="100%" height="330%" />
-									</div>
-								</SwiperSlide>
+								{data.map((item) => (
+									<SwiperSlide>
+										<div key={item?.id_place} className={styles.title_card}>
+											<p className="text-white ms-3 mt-2">{item?.city}</p>
+											<h1 className="text-white ms-3">{item?.country}</h1>
+											<span className="badge rounded-pill fw-bold ms-3 mt-3 px-3 py-2">15 Airlines</span>
+											<p className="text-white ms-3 fixed-bottom">From $100</p>
+										</div>
+										<div className={`card ${styles.swiper_2}`}>
+											domain Image any problem
+											<Image src="/images/image_3.png" alt="logo" width="100%" height="330%" />
+											<img src={item?.city_picture} alt="Image" />
+										</div>
+									</SwiperSlide>
+								))}
 							</Swiper>
-						</div> */}
+						</div>
+						*/}
 						{/* End Swiper mode 2 */}
 					</section>
 					{/* End trending destination */}
@@ -99,62 +118,19 @@ export default function Home() {
 						<h3 className="mb-3">Top 10 destination</h3>
 						<div>
 							<Swiper freeMode={true} grabCursor={true} modules={[FreeMode]} className="mySwiper" slidesPerView={4} spaceBetween={90}>
-								<SwiperSlide>
-									<div className={`d-flex justify-content-center flex-column align-items-center ${styles.swiper_circle_title}`}>
-										<div className={`card border border-2 border-primary rounded-circle p-1 ${styles.swiper_circle}`}>
-											<Image src="/images/image_2.jpg" alt="logo" width="100%" height="100%" className="rounded-circle" />
+								{/* Using api get all place */}
+								{data.map((item) => (
+									<SwiperSlide key={item?.id_place}>
+										<div className={`d-flex justify-content-center flex-column align-items-center ${styles.swiper_circle_title}`}>
+											<div className={`card border border-2 border-primary rounded-circle p-1 ${styles.swiper_circle}`}>
+												{/* any problem domain image */}
+												{/* <Image src="/images/image_2.jpg" alt="logo" width="100%" height="100%" className="rounded-circle" /> */}
+												<img src={item?.city_picture} className="rounded-circle" alt="Image" />
+											</div>
+											<p className="mt-2 text-muted">{item?.country}</p>
 										</div>
-										<p className="mt-2 text-muted">Japan</p>
-									</div>
-								</SwiperSlide>
-								<SwiperSlide>
-									<div className={`d-flex justify-content-center flex-column align-items-center ${styles.swiper_circle_title}`}>
-										<div className={`card border border-2 border-primary rounded-circle p-1 ${styles.swiper_circle}`}>
-											<Image src="/images/image_3.png" alt="logo" width="100%" height="100%" className="rounded-circle" />
-										</div>
-										<p className="mt-2 text-muted">Japan</p>
-									</div>
-								</SwiperSlide>
-								<SwiperSlide>
-									<div className={`d-flex justify-content-center flex-column align-items-center ${styles.swiper_circle_title}`}>
-										<div className={`card border border-2 border-primary rounded-circle p-1 ${styles.swiper_circle}`}>
-											<Image src="/images/image_3.png" alt="logo" width="100%" height="100%" className="rounded-circle" />
-										</div>
-										<p className="mt-2 text-muted">Japan</p>
-									</div>
-								</SwiperSlide>
-								<SwiperSlide>
-									<div className={`d-flex justify-content-center flex-column align-items-center ${styles.swiper_circle_title}`}>
-										<div className={`card border border-2 border-primary rounded-circle p-1 ${styles.swiper_circle}`}>
-											<Image src="/images/image_3.png" alt="logo" width="100%" height="100%" className="rounded-circle" />
-										</div>
-										<p className="mt-2 text-muted">Japan</p>
-									</div>
-								</SwiperSlide>
-								<SwiperSlide>
-									<div className={`d-flex justify-content-center flex-column align-items-center ${styles.swiper_circle_title}`}>
-										<div className={`card border border-2 border-primary rounded-circle p-1 ${styles.swiper_circle}`}>
-											<Image src="/images/image_3.png" alt="logo" width="100%" height="100%" className="rounded-circle" />
-										</div>
-										<p className="mt-2 text-muted">Japan</p>
-									</div>
-								</SwiperSlide>
-								<SwiperSlide>
-									<div className={`d-flex justify-content-center flex-column align-items-center ${styles.swiper_circle_title}`}>
-										<div className={`card border border-2 border-primary rounded-circle p-1 ${styles.swiper_circle}`}>
-											<Image src="/images/image_3.png" alt="logo" width="100%" height="100%" className="rounded-circle" />
-										</div>
-										<p className="mt-2 text-muted">Japan</p>
-									</div>
-								</SwiperSlide>
-								<SwiperSlide>
-									<div className={`d-flex justify-content-center flex-column align-items-center ${styles.swiper_circle_title}`}>
-										<div className={`card border border-2 border-primary rounded-circle p-1 ${styles.swiper_circle}`}>
-											<Image src="/images/image_3.png" alt="logo" width="100%" height="100%" className="rounded-circle" />
-										</div>
-										<p className="mt-2 text-muted">Japan</p>
-									</div>
-								</SwiperSlide>
+									</SwiperSlide>
+								))}
 							</Swiper>
 						</div>
 					</section>
