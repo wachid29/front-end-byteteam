@@ -26,6 +26,9 @@
     overflow-x: hidden;
 }
 
+.iconPlane img {
+    cursor: pointer;
+}
 .contentTitle p {
     font-family: 'Poppins', sans-serif;
     font-style: normal;

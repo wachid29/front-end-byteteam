@@ -9,6 +9,7 @@ import { ProfileContext } from "../context";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 const editProfile = () => {
 	const [profile, setProfile] = useState([]);
@@ -135,8 +136,10 @@ const editProfile = () => {
 					<div className="row justify-content-center">
 						<div className="col-md-4">
 							<div className="row mt-3">
-								<div className="col-3 text-center">
-									<Image src={imgPlane} />
+								<div className={`col-3 text-center ${profileStyle.iconPlane}`}>
+									<Link href="/" passHref>
+										<Image src={imgPlane} />
+									</Link>
 								</div>
 								<div className={`col-6 px-0 ${profileStyle.contentTitle}`}>
 									<p>Ankasa</p>
