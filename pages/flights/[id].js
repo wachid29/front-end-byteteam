@@ -16,6 +16,17 @@ import FlightCost from "@components/pages/FlightCost";
 export default function FlightDetail(props) {
 	const { ticket, child, adults } = props;
 
+	const createBooking = () => {
+		const data = {
+			id_user: 1,
+			user_role: "customer",
+			id_ticket: ticket.id_ticket,
+			total_passenger: parseInt(child) + parseInt(adults),
+			total_payment: ticket?.price * (parseInt(child) + parseInt(adults)),
+		};
+		fetcher.postBooking(data).then((res) => console.log(res));
+	};
+
 	return (
 		<LayoutBgPlane title="Flight Detail - Ticketing Website">
 			<div className={flightInfo}>
@@ -35,7 +46,9 @@ export default function FlightDetail(props) {
 			</div>
 			<FlightFacilities facilities={ticket?.facility} />
 			<FlightCost cost={ticket?.price * (parseInt(child) + parseInt(adults))} />
-			<button className="btn btn-blue rounded-4 w-100 fw-bold py-3 mt-auto">BOOK FLIGHT</button>
+			<button className="btn btn-blue rounded-4 w-100 fw-bold py-3 mt-auto" onClick={createBooking}>
+				BOOK FLIGHT
+			</button>
 		</LayoutBgPlane>
 	);
 }
