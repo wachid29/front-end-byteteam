@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useContext, useEffect } from "react";
 import profileStyle from "../styles/profile.module.css";
 import Image from "next/image";
@@ -157,7 +158,7 @@ const editProfile = () => {
 							<form onSubmit={handleUploadProfile}>
 								<div className="row mx-3">
 									<input type="file" id="upload" hidden onChange={handleUpload} />
-									<label className={profileStyle.labelUpload} for="upload">
+									<label className={profileStyle.labelUpload} htmlFor="upload">
 										<div className={profileStyle.iconUpload}>
 											<MdOutlineAddAPhoto size={20} color="#2395FF" />
 											<p>{titleImage}</p>
@@ -175,7 +176,7 @@ const editProfile = () => {
 							</div>
 							<form onSubmit={handleUpdateProfile}>
 								<div className={`px-3 ${profileStyle.formInput}`}>
-									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
+									<label htmlFor="exampleFormControlInput1" className="form-label px-3 mt-4">
 										Email
 									</label>
 									<input
@@ -186,7 +187,7 @@ const editProfile = () => {
 									/>
 								</div>
 								<div className={`px-3 ${profileStyle.formInput}`}>
-									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
+									<label htmlFor="exampleFormControlInput1" className="form-label px-3 mt-4">
 										Phone Number
 									</label>
 									<input
@@ -208,7 +209,7 @@ const editProfile = () => {
 									<p>Biodata</p>
 								</div>
 								<div className={`px-3 ${profileStyle.formInput}`}>
-									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
+									<label htmlFor="exampleFormControlInput1" className="form-label px-3 mt-4">
 										Username
 									</label>
 									<input
@@ -219,7 +220,7 @@ const editProfile = () => {
 									/>
 								</div>
 								<div className={`px-3 ${profileStyle.formInput}`}>
-									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
+									<label htmlFor="exampleFormControlInput1" className="form-label px-3 mt-4">
 										Address
 									</label>
 									<select className="form-select shadow-none px-3" id="sel1" onChange={(e) => setIdPlace(e.target.value)}>
@@ -232,7 +233,7 @@ const editProfile = () => {
 									</select>
 								</div>
 								<div className={`px-3 ${profileStyle.formInput}`}>
-									<label for="exampleFormControlInput1" className="form-label px-3 mt-4">
+									<label htmlFor="exampleFormControlInput1" className="form-label px-3 mt-4">
 										Post Code
 									</label>
 									<input
