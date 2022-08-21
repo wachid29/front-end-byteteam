@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from "react";
 import registerStyle from "../styles/pages/register.module.css";
 import { IoIosArrowBack } from "react-icons/io";
@@ -109,7 +110,7 @@ const register = () => {
 							</form>
 							<div className={`form-check mt-3 mx-3 ${registerStyle.checkBox}`}>
 								<input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-								<label className="form-check-label" for="flexCheckDefault">
+								<label className="form-check-label" htmlFor="flexCheckDefault">
 									Accept terms and condition
 								</label>
 							</div>
