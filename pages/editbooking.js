@@ -1,16 +1,23 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-// import axios from "axios";
+import axios from "axios";
 // import Link from "next/link";
 // import Image from "next/image";
 
-// import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 // import profileStyle from "../styles/profile.module.css";
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 // import imgPlane from "../public/images/plane.png";
 
+
+// persiapan untuk .env domain
+// var url = 'https://ticket-byte-v1.herokuapp.com';
+var url = 'http://localhost:8000';
+
 const editBooking = () => {
-	// const [profile, setProfile] = useState([]);
+	const [Datas, setDatas] = useState([]);
+	const [Update, setUpdate] = useState("");
+	const [IdBooking, setIdBooking] = useState();
 	// const [place, setPlace] = useState([]);
 	// const dataUser = useContext(ProfileContext);
 	// const [titleImage, setTitleImage] = useState("Edit Profile Image");
@@ -18,239 +25,197 @@ const editBooking = () => {
 	// const [email, setEmail] = useState("");
 	// const [phoneNumber, setPhoneNumber] = useState();
 	// const [fullname, setFullname] = useState("");
-	// const [city, setCity] = useState("");
 	// const [idPlace, setIdPlace] = useState();
-	// const [postCode, setPostCode] = useState();
-	// const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	// const router = useRouter();
 
-	// useEffect(() => {
-	// 	localStorage;
-	// 	getProfile();
-	// 	getPlace();
-	// }, [profile?.city]);
+	axios
+		.get(`${url}/booking/getall`)
+		.then((res) => {
+			// console.log(res?.data.booking);
+			setDatas(res?.data.booking);
+		})
+		.catch((err) => {
+			console.log(err);
+		}, []);
+	// console.log(profile);
 
-	// const getProfile = () => {
-	// 	const idUser = dataUser?.id;
-	// 	if (idUser) {
-	// 		axios
-	// 			.get(`https://ticket-byte-v1.herokuapp.com/user/getbyid/${idUser}`)
-	// 			.then((res) => {
-	// 				setProfile(res?.data[0]);
-	// 			})
-	// 			.catch((err) => {
-	// 				console.log(err);
-	// 			});
-	// 	}
-	// };
+	{/* 
+		/booking/statuspaymentforadmin
+		id_booking | user_role | status_payment
+	*/}
+	{/* 
+		/booking/statuspaymentcanceled
+		id_booking | id_user
+	*/}
 
-	// const getPlace = () => {
-	// 	axios
-	// 		.get("https://ticket-byte-v1.herokuapp.com/place")
-	// 		.then((res) => {
-	// 			setPlace(res?.data?.place);
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log(err);
-	// 		});
-	// };
+	const handleStatusPayment = (e) => {
+		e.preventDefault();
+		setIsLoading(true);
 
-	// const handleUpload = (e) => {
-	// 	e.preventDefault();
-	// 	let uploadedImage = e.target.files[0];
-	// 	let nameImage = e.target?.files[0]?.name;
-	// 	setTitleImage(nameImage);
-	// 	setImage(uploadedImage);
-	// };
-	// const handleUploadProfile = (e) => {
-	// 	e.preventDefault();
-	// 	setIsLoading(true);
+    if (
+      Update == "" &&
+      Update != "canceled" &&
+      Update != "issue" &&
+      Update != "boarding"
+    ) {
+			Swal.fire({
+				icon: "error",
+				text: `Input "canceled" or "issue" or "boarding" for update status_payment, (id_booking: ${IdBooking})`,
+			});
+    }
 
-	// 	const formData = new FormData();
-	// 	formData.append("id", dataUser?.id);
-	// 	formData.append("photo", image);
-
-	// 	const config = {
-	// 		headers: {
-	// 			"Content-Type": "multipart/form-data; ",
-	// 		},
-	// 	};
-	// 	axios
-	// 		.patch(`https://ticket-byte-v1.herokuapp.com/user/photo`, formData, config)
-	// 		.then((res) => {
-	// 			Swal.fire({
-	// 				icon: "success",
-	// 				text: "Edit Profile Success",
-	// 			});
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log(err);
-	// 			Swal.fire({
-	// 				icon: "error",
-	// 				text: `${err?.response?.data}`,
-	// 			});
-	// 		})
-	// 		.finally(() => {
-	// 			setIsLoading(false);
-	// 		});
-	// };
-
-	// const handleUpdateProfile = (e) => {
-	// 	e.preventDefault();
-	// 	setIsLoading(true);
-
-	// 	axios
-	// 		.patch("https://ticket-byte-v1.herokuapp.com/user/edit", {
-	// 			id: dataUser?.id,
-	// 			fullname: fullname,
-	// 			email: email,
-	// 			phone_number: phoneNumber,
-	// 			city: city,
-	// 			id_place: idPlace,
-	// 			post_code: postCode,
-	// 		})
-	// 		.then((res) => {
-	// 			Swal.fire({
-	// 				icon: "success",
-	// 				text: res?.data,
-	// 			}).then((result) => (result.isConfirmed ? router.push("/profile") : null));
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log(err);
-	// 			Swal.fire({
-	// 				icon: "error",
-	// 				text: `${err?.response?.data}`,
-	// 			});
-	// 		})
-	// 		.finally(() => {
-	// 			setIsLoading(false);
-	// 		});
-	// };
+		if(Update == 'canceled'){
+			axios
+				.patch(`${url}/booking/statuspaymentcanceled`, {
+					id_booking: IdBooking,
+				}, [])
+				.then((res) => {
+					Swal.fire({
+						icon: "success",
+						text: res?.data,
+					})
+				})
+				.catch((err) => {
+					console.log(err);
+					Swal.fire({
+						icon: "error",
+						text: `${err?.response?.data}, (id_booking: ${IdBooking})`,
+					});
+				})
+				.finally(() => {
+					setIsLoading(false);
+				});
+		} else {
+			axios
+				.patch(`${url}/booking/statuspaymentforadmin`, {
+					id_booking: IdBooking,
+					user_role: "admin",
+					status_payment: Update,
+				}, [])
+				.then((res) => {
+					Swal.fire({
+						icon: "success",
+						text: res?.data,
+					})
+				})
+				.catch((err) => {
+					console.log(err);
+					Swal.fire({
+						icon: "error",
+						text: `${err?.response?.data}, (id_booking: ${IdBooking})`,
+					});
+				})
+				.finally(() => {
+					setIsLoading(false);
+				});
+		}
+	};
 
 	return (
 		<>
-		<div>tes new page and commit</div>
-			{/* <div className="container">
-				<div className={profileStyle.contentEdit}>
-					<div className="row justify-content-center">
-						<div className="col-md-4">
-							<div className="row mt-3">
-								<div className={`col-3 text-center ${profileStyle.iconPlane}`}>
-									<Link href="/" passHref>
-										<Image src={imgPlane} />
-									</Link>
+
+				{/* 
+					jk bisa, buat di localhost:8000, jgn ngebanyakin data deploy utama
+
+					utamakan fungsionalitas:
+						edit SP from 'waiting' to 'issue' or 'cancel'
+						edit SP from 'issue' to 'boarding'
+
+					user_profile
+						"id": 6,
+						"fullname": "coba",
+
+					"id_ticket": 10,
+					"id_airplane": 2,
+            	"name": "Garuda Indonesia",
+            	"logo": "https://i.pinimg.com/474x/bd/8a/5e/bd8a5e1921a0afa7bb5f7159ffe29223.jpg"
+					"code_airplane": "GA-100",
+					"from_date": "2022-08-21T00:00:00.000Z",
+					"from_time": "07:05:00",
+					"class_flight": "first class",
+					"price": 900000,
+
+					new div for guide notes status payment for admin (or for presentation)
+					filtering show/hide by checklist waiting, canceled, issue, boarding
+					
+				*/}
+
+
+			<h2 className="row justify-content-center py-5" >
+				Page for admin to edit payment status by id_booking
+			</h2>
+
+
+			{/* EDIT PAYMENT BOOKING / PAYMENT STATUS */}
+			<div className="pb-5">
+				<div className="row justify-content-center" >
+					<div className="col-md-2">Input Id booking</div>
+					<div className="col-md-3">Update payment_status to</div>
+					<div className="col-md-2">Confirm</div>
+				</div>
+
+				<div className="row justify-content-center" >
+					<div className={"col-md-2"}>
+						<input
+							className=""
+							style={{width: "25%"}}
+							type="number"
+							placeholder=""
+							onChange={(e) => (setIdBooking(e.target.value))}
+						/>
+					</div>
+					<div className={"col-md-5"}> 
+						<form onSubmit={handleStatusPayment}>
+							<div className="row justify-content-center" >
+								<div className={"col-md-6"}>
+									<input
+										className=""
+										style={{width: "100%"}}
+										type="text"
+										placeholder="canceled / issue / boarding"
+										onChange={(e) => (setUpdate(e.target.value))}
+									/>
 								</div>
-								<div className={`col-6 px-0 ${profileStyle.contentTitle}`}>
-									<p>Ankasa</p>
-								</div>
-								<div className="col-3 text-end">
-									<RiAlignRight size={30} />
-								</div>
-							</div>
-							<div className={`row mt-5 mx-2 ${profileStyle.textProfileTop}`}>
-								<p>PROFILE</p>
-							</div>
-							<div className={`row mt-2 mx-2 ${profileStyle.textProfileBtm}`}>
-								<p>Profile</p>
-							</div>
-							<form onSubmit={handleUploadProfile}>
-								<div className="row mx-3">
-									<input type="file" id="upload" hidden onChange={handleUpload} />
-									<label className={profileStyle.labelUpload} htmlFor="upload">
-										<div className={profileStyle.iconUpload}>
-											<MdOutlineAddAPhoto size={20} color="#2395FF" />
-											<p>{titleImage}</p>
-										</div>
-									</label>
-								</div>
-								<div className={`d-grid gap-2 my-4 px-3 d-md-flex justify-content-end ${profileStyle.btnSave}`}>
+								<div className={"col-md-6"}>
 									<button className="btn" type="submit" disabled={isLoading}>
-										{isLoading ? "Loading..." : "Save"}
+										{isLoading ? "Loading..." : "Update"}
 									</button>
 								</div>
-							</form>
-							<div className={`row mt-5 mx-2 ${profileStyle.textTitleForm}`}>
-								<p>Contact</p>
 							</div>
-							<form onSubmit={handleUpdateProfile}>
-								<div className={`px-3 ${profileStyle.formInput}`}>
-									<label htmlFor="exampleFormControlInput1" className="form-label px-3 mt-4">
-										Email
-									</label>
-									<input
-										className="form-control form-control-sm shadow-none py-0 px-3"
-										type="email"
-										placeholder={profile?.email}
-										onChange={(e) => setEmail(e.target.value)}
-									/>
-								</div>
-								<div className={`px-3 ${profileStyle.formInput}`}>
-									<label htmlFor="exampleFormControlInput1" className="form-label px-3 mt-4">
-										Phone Number
-									</label>
-									<input
-										className="form-control form-control-sm shadow-none py-0 px-3"
-										type="text"
-										placeholder={profile?.phone_number}
-										onChange={(e) => setPhoneNumber(e.target.value)}
-									/>
-								</div>
-								<div className="row mt-3 mx-0">
-									<div className={`col-11 px-0 ${profileStyle.textAccount} `}>
-										<p>Account Settings</p>
-									</div>
-									<div className="col-1 px-0 text-end ">
-										<IoIosArrowForward color="#2395FF" size={22} />
-									</div>
-								</div>
-								<div className={`row mt-3 mx-2 ${profileStyle.textTitleForm}`}>
-									<p>Biodata</p>
-								</div>
-								<div className={`px-3 ${profileStyle.formInput}`}>
-									<label htmlFor="exampleFormControlInput1" className="form-label px-3 mt-4">
-										Username
-									</label>
-									<input
-										className="form-control form-control-sm py-0 shadow-none px-3"
-										type="text"
-										placeholder={profile?.fullname}
-										onChange={(e) => setFullname(e.target.value)}
-									/>
-								</div>
-								<div className={`px-3 ${profileStyle.formInput}`}>
-									<label htmlFor="exampleFormControlInput1" className="form-label px-3 mt-4">
-										Address
-									</label>
-									<select className="form-select shadow-none px-3" id="sel1" onChange={(e) => setIdPlace(e.target.value)}>
-										{place.map((item, key) => (
-											<option key={key} value={item?.id_place}>
-												{item?.city}
-											</option>
-										))}
-										;
-									</select>
-								</div>
-								<div className={`px-3 ${profileStyle.formInput}`}>
-									<label htmlFor="exampleFormControlInput1" className="form-label px-3 mt-4">
-										Post Code
-									</label>
-									<input
-										className="form-control form-control-sm py-0 shadow-none px-3"
-										type="text"
-										placeholder={profile?.post_code}
-										onChange={(e) => setPostCode(e.target.value)}
-									/>
-								</div>
-								<div className={`d-grid gap-2 my-4 px-3 d-md-flex justify-content-end ${profileStyle.btnSave}`}>
-									<button className="btn" type="submit" disabled={isLoading}>
-										{isLoading ? "Loading..." : "Save"}
-									</button>
-								</div>
-							</form>
-						</div>
+						</form>
 					</div>
 				</div>
-			</div> */}
+			</div>
+
+
+			{/* SHOW ALL PAYMENT BOOKING / PAYMENT STATUS */}
+			<div className="row justify-content-center" >
+				<div className="col-md-1">Id</div>
+				{/* <div className="col-md-2">id_ticket</div>
+				<div className="col-md-2">id_user</div>
+				<div className="col-md-2">Passenger/s</div>
+				<div className="col-md-2">Total Payment</div> */}
+				<div className="col-md-1">Status before</div>
+			</div>
+
+			{Datas.map((data) => (
+				<div 
+					key={data.id_booking} 
+					className="row justify-content-center"
+				>
+
+					<div className="col-md-1">{data?.id_booking}</div>
+					{/* <div className="col-md-2">{data.id_ticket}</div>
+					<div className="col-md-2">{data.id_user}</div>
+					<div className="col-md-2">{data.total_passenger}</div>
+					<div className="col-md-2">{data.total_payment}</div> */}
+					<div className="col-md-1">{data.status_payment}</div>
+					
+				</div>
+
+			))}
+
 		</>
 	);
 };
