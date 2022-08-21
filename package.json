@@ -12,12 +12,18 @@
 		"format": "prettier --write ./**/*.{js,jsx,json,md} --config ./.prettierrc.json"
 	},
 	"dependencies": {
+		"@fontsource/poppins": "^4.5.9",
+		"lottie-react": "^2.3.1",
+		"moment": "^2.29.4",
 		"axios": "^0.27.2",
 		"bootstrap": "^5.2.0",
 		"firebase": "^9.9.3",
 		"next": "12.2.3",
+		"qrcode.react": "^3.1.0",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
+		"react-loading-skeleton": "^3.1.0",
+		"swr": "^1.3.0",
 		"react-icon": "^1.0.0",
 		"react-icons": "^4.4.0",
 		"sweetalert2": "^11.4.28",
