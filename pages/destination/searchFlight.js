@@ -11,19 +11,20 @@ import styles from "../../styles/destination.module.css";
 
 function searchFlight() {
 	const [data, setData] = useState([]);
+	// query param search index
+	const router = useRouter();
+	const query = router.query;
+	const { searchDestination } = query;
 	useEffect(() => {
 		axios.get("/api/place").then((res) => {
 			let location = res.data.place;
 			setData(location);
 		});
 	}, []);
-	// query param search index
-	const router = useRouter();
-	const query = router.query;
-	const { searchDestination } = query;
+
 	// state search data in query params
-	const [from, setFrom] = useState({ cityFrom: "" });
-	const [to, setTo] = useState({ cityTo: "" });
+	const [from, setFrom] = useState({ cityFrom: "1" });
+	const [to, setTo] = useState({ cityTo: "1" });
 	const [date, setDate] = useState({ date: "" });
 	const [radioClass, setRadioClass] = useState({ classFlight: "" });
 	const [peopleAdult, setPeopleAdul] = useState({ adult: "" });
@@ -95,9 +96,7 @@ function searchFlight() {
 								{data
 									.sort((a, b) => (a.city > b.city ? 1 : -1))
 									.map((item) => (
-										<option selected={searchDestination === item?.city.toLowerCase()} value={item?.id_place}>
-											{item?.city}
-										</option>
+										<option selected={searchDestination === item?.city.toLowerCase()}>{item?.city}</option>
 									))}
 							</select>
 						</div>
@@ -119,12 +118,7 @@ function searchFlight() {
 					{/*Input Departure */}
 					<div className="row g-2 mt-3 px-2">
 						<h3 className="text-muted">Departure</h3>
-						<input
-							type="date"
-							className="form-control mb-3"
-							value={date.date}
-							onChange={(event) => setDate({ date: event.target.value })}
-						/>
+						<input type="date" className="form-control mb-3" value={date.date} onChange={(event) => setDate({ date: event.target.value })} />
 						<h3 className="text-muted">How many person ?</h3>
 						<div className="col-6">
 							<input
