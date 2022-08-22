@@ -8,8 +8,8 @@ import styles from "../../styles/admin/dashboard.module.css";
 
 function Sidebar(props) {
 	return (
-		<div>
-			<div>{props.children}</div>
+		<div className="w-100 h-100">
+			<div className="w-100 h-100">{props.children}</div>
 			<nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block bg-light collapse ${styles.sidebar}`}>
 				<div className="position-sticky pt-3">
 					<ul className="nav flex-column">

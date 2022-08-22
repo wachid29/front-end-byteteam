@@ -6,8 +6,10 @@ import Swal from "sweetalert2";
 import Sidebar from "layouts/admin/Sidebar";
 // component
 import Navbar from "@components/navbar/admin/Navbar";
+import { hasCookie, getCookie } from "cookies-next";
+import { decryptData } from "@utils/crypto";
 
-const maskapai = () => {
+const maskapai = (props) => {
 	const [name, setName] = useState("");
 	const [logo, setLogo] = useState("");
 	const [airline, setAirline] = useState([]);
@@ -69,7 +71,7 @@ const maskapai = () => {
 										<div className="card p-3 shadow">
 											<form onSubmit={handleAddMaskapai}>
 												<div className="mb-3">
-													<label for="exampleInputEmail1" className="form-label">
+													<label htmlFor="exampleInputEmail1" className="form-label">
 														Airline Name
 													</label>
 													<input
@@ -80,7 +82,7 @@ const maskapai = () => {
 													/>
 												</div>
 												<div className="mb-3">
-													<label for="formFile" className="form-label">
+													<label htmlFor="formFile" className="form-label">
 														Airline Logo
 													</label>
 													<input
@@ -108,15 +110,15 @@ const maskapai = () => {
 													<th scope="col">Maskapai</th>
 												</tr>
 											</thead>
-											{airline?.map((item, index) => (
-												<tbody>
+											<tbody>
+												{airline?.map((item, index) => (
 													<tr key={index}>
 														<td>{index + 1}</td>
 														<td>{item?.id_maskapai}</td>
 														<td>{item?.name}</td>
 													</tr>
-												</tbody>
-											))}
+												))}
+											</tbody>
 										</table>
 									</div>
 								</div>
@@ -130,3 +132,27 @@ const maskapai = () => {
 };
 
 export default maskapai;
+
+export const getServerSideProps = async ({ req }) => {
+	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
+		const user = decryptData(getCookie("datas", { req }));
+		if (user.role !== "admin") {
+			return {
+				redirect: {
+					destination: "/register",
+					permanent: true,
+				},
+			};
+		}
+
+		return {
+			props: {},
+		};
+	}
+	return {
+		redirect: {
+			destination: "/register",
+			permanent: true,
+		},
+	};
+};

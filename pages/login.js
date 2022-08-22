@@ -36,7 +36,13 @@ export default function Login() {
 				Swal.fire({
 					icon: "success",
 					text: res?.message,
-				}).then((result) => (result.isConfirmed ? router.replace("/") : null));
+				}).then((result) => {
+					if (result.isConfirmed) {
+						if (res?.datas?.role === "admin") return router.push("/admin");
+						return router.push("/");
+					}
+					return null;
+				});
 			})
 			.catch((err) =>
 				Swal.fire({

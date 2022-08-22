@@ -17,11 +17,14 @@ import Swal from "sweetalert2";
 // PERSIAPAN UNTUK ENV DOMAIN
 var url = "https://ticket-byte-v1.herokuapp.com";
 // var url = 'http://localhost:8000';
+import { hasCookie, getCookie } from "cookies-next";
+import { decryptData } from "@utils/crypto";
 
-const editBooking = () => {
+const editBooking = (props) => {
+	const { query } = props;
 	const [Datas, setDatas] = useState([]);
 	const [Update, setUpdate] = useState("");
-	const [IdBooking, setIdBooking] = useState();
+	const [IdBooking, setIdBooking] = useState("");
 	// const [place, setPlace] = useState([]);
 	// const dataUser = useContext(ProfileContext);
 	// const [titleImage, setTitleImage] = useState("Edit Profile Image");
@@ -33,14 +36,21 @@ const editBooking = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	// const router = useRouter();
 
-	axios
-		.get(`${url}/booking/getall`)
-		.then((res) => {
-			setDatas(res?.data.booking);
-		})
-		.catch((err) => {
-			console.log(err);
-		}, []);
+	useEffect(() => {
+		axios
+			.get(`${url}/booking/getall`)
+			.then((res) => {
+				setDatas(res?.data.booking);
+			})
+			.catch((err) => {
+				console.log(err);
+			})
+			.finally(() => {
+				setUpdate(Object.keys(query).length !== 0 ? query.status_payment : "");
+				setIdBooking(Object.keys(query).length !== 0 ? parseInt(query.id_booking) : "");
+			});
+	}, [query]);
+
 	const handleStatusPayment = (e) => {
 		e.preventDefault();
 		setIsLoading(true);
@@ -127,14 +137,20 @@ const editBooking = () => {
 										<small className="">-from `issue` to `issue` or `boarding`</small>
 										<hr className="mb-2" />
 										<form onSubmit={handleStatusPayment}>
-											<div class="mb-3">
-												<label for="formGroupExampleInput" className="form-label">
+											<div className="mb-3">
+												<label htmlFor="formGroupExampleInput" className="form-label">
 													Input Id Booking
 												</label>
-												<input type="number" className="form-control" id="formGroupExampleInput" onChange={(e) => setIdBooking(e.target.value)} />
+												<input
+													type="number"
+													className="form-control"
+													id="formGroupExampleInput"
+													value={IdBooking}
+													onChange={(e) => setIdBooking(e.target.value)}
+												/>
 											</div>
-											<div class="mb-3">
-												<label for="formGroupExampleInput" className="form-label">
+											<div className="mb-3">
+												<label htmlFor="formGroupExampleInput" className="form-label">
 													Update Status Payment
 												</label>
 												<input
@@ -142,6 +158,7 @@ const editBooking = () => {
 													placeholder="canceled / issue / boarding"
 													className="form-control"
 													id="formGroupExampleInput"
+													value={Update}
 													onChange={(e) => setUpdate(e.target.value)}
 												/>
 											</div>
@@ -191,3 +208,27 @@ const editBooking = () => {
 };
 
 export default editBooking;
+
+export const getServerSideProps = async ({ req, query }) => {
+	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
+		const user = decryptData(getCookie("datas", { req }));
+		if (user.role !== "admin") {
+			return {
+				redirect: {
+					destination: "/register",
+					permanent: true,
+				},
+			};
+		}
+
+		return {
+			props: { query },
+		};
+	}
+	return {
+		redirect: {
+			destination: "/register",
+			permanent: true,
+		},
+	};
+};

@@ -1,9 +1,31 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { deleteCookie } from "cookies-next";
+import Swal from "sweetalert2";
 // css
 import styles from "../../../styles/admin/dashboard.module.css";
 
 function Navbar() {
+	const router = useRouter();
+
+	const onLogout = () => {
+		Swal.fire({
+			icon: "question",
+			text: "Are you sure to logout?",
+			showCancelButton: true,
+			confirmButtonText: "Sure",
+			cancelButtonText: "No",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				deleteCookie("token");
+				deleteCookie("datas");
+				return router.push("/register");
+			}
+			return null;
+		});
+	};
+
 	return (
 		<div>
 			{/* header */}
@@ -23,7 +45,7 @@ function Navbar() {
 				</button>
 				<input className={`form-control form-control-dark w-100 ${styles.form_control_dark}`} type="text" placeholder="Search" aria-label="Search" />
 				<div className="navbar-nav">
-					<div className="nav-item text-nowrap">
+					<div className="nav-item text-nowrap" onClick={onLogout}>
 						<a className="nav-link px-3" href="#">
 							Sign out
 						</a>

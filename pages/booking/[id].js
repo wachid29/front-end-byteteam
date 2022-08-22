@@ -33,7 +33,7 @@ export default function BookingDetail({ booking }) {
 							from_gate={booking?.from_gate}
 						/>
 						<BookingDeparture from_date={booking?.from_date} from_time={booking?.from_time} />
-						<BookingQrCode width={186} />
+						<BookingQrCode width={186} idBooking={booking?.id_booking} />
 					</div>
 				</div>
 			</div>

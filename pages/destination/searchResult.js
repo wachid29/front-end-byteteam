@@ -24,7 +24,7 @@ function SearchResult(props) {
 				<div className="d-flex align-items-center justify-content-between">
 					<span className="text-gray text-start fw-medium">{`${totalTicket} flight found`}</span>
 				</div>
-				{ticket.map((item, i) => (
+				{ticket?.map((item, i) => (
 					<Link
 						key={i}
 						href={{

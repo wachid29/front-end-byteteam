@@ -6,7 +6,10 @@ import Sidebar from "layouts/admin/Sidebar";
 import Navbar from "@components/navbar/admin/Navbar";
 import axios from "axios";
 import Swal from "sweetalert2";
-const place = () => {
+import { hasCookie, getCookie } from "cookies-next";
+import { decryptData } from "@utils/crypto";
+
+const place = (props) => {
 	const [city, setCity] = useState("");
 	const [country, setCountry] = useState("");
 	const [cityCode, setCityCode] = useState("");
@@ -71,19 +74,19 @@ const place = () => {
 									<div className="card p-4 shadow">
 										<form onSubmit={handleAddPlace}>
 											<div className="mb-3">
-												<label for="exampleInputEmail1" className="form-label">
+												<label htmlFor="exampleInputEmail1" className="form-label">
 													City
 												</label>
 												<input type="text" className="form-control shadow-none" placeholder="City" onChange={(e) => setCity(e.target.value)} />
 											</div>
 											<div className="mb-3">
-												<label for="formFile" className="form-label">
+												<label htmlFor="formFile" className="form-label">
 													Country
 												</label>
 												<input type="text" className="form-control shadow-none" placeholder="Country" onChange={(e) => setCountry(e.target.value)} />
 											</div>
 											<div className="mb-3">
-												<label for="formFile" className="form-label">
+												<label htmlFor="formFile" className="form-label">
 													City Code
 												</label>
 												<input
@@ -94,7 +97,7 @@ const place = () => {
 												/>
 											</div>
 											<div className="mb-3">
-												<label for="formFile" className="form-label">
+												<label htmlFor="formFile" className="form-label">
 													City Picture
 												</label>
 												<input
@@ -125,8 +128,8 @@ const place = () => {
 												{/* <th scope="col">City Picture</th> */}
 											</tr>
 										</thead>
-										{placeAll?.map((item, index) => (
-											<tbody>
+										<tbody>
+											{placeAll?.map((item, index) => (
 												<tr key={index}>
 													<td className="text-center">{index + 1}</td>
 													<td className="text-center">{item?.id_place}</td>
@@ -135,8 +138,8 @@ const place = () => {
 													<td className="text-center">{item?.city_code}</td>
 													{/* <td>{item?.city_picture}</td> */}
 												</tr>
-											</tbody>
-										))}
+											))}
+										</tbody>
 									</table>
 								</div>
 							</div>
@@ -149,3 +152,27 @@ const place = () => {
 };
 
 export default place;
+
+export const getServerSideProps = async ({ req }) => {
+	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
+		const user = decryptData(getCookie("datas", { req }));
+		if (user.role !== "admin") {
+			return {
+				redirect: {
+					destination: "/register",
+					permanent: true,
+				},
+			};
+		}
+
+		return {
+			props: {},
+		};
+	}
+	return {
+		redirect: {
+			destination: "/register",
+			permanent: true,
+		},
+	};
+};

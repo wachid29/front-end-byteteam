@@ -9,8 +9,10 @@ import { BsHouseFill, BsPeople } from "react-icons/bs";
 import { FaWarehouse } from "react-icons/fa";
 // css
 import styles from "../../styles/admin/dashboard.module.css";
+import { hasCookie, getCookie } from "cookies-next";
+import { decryptData } from "@utils/crypto";
 
-function dashboard() {
+function dashboard(props) {
 	return (
 		<div>
 			{/* header */}
@@ -73,3 +75,27 @@ function dashboard() {
 }
 
 export default dashboard;
+
+export const getServerSideProps = async ({ req }) => {
+	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
+		const user = decryptData(getCookie("datas", { req }));
+		if (user.role !== "admin") {
+			return {
+				redirect: {
+					destination: "/register",
+					permanent: true,
+				},
+			};
+		}
+
+		return {
+			props: {},
+		};
+	}
+	return {
+		redirect: {
+			destination: "/register",
+			permanent: true,
+		},
+	};
+};

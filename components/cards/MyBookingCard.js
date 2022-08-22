@@ -1,5 +1,5 @@
 import NextLink from "next/link";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import fetcher from "@utils/axios/fetcher";
 import moment from "moment";
 import Swal from "sweetalert2";
@@ -25,6 +25,7 @@ export default function MyBookingCard(props) {
 			cancelButtonText: "No",
 		}).then((result) => {
 			if (result.isConfirmed) {
+				mutate("myBooking");
 				return fetcher.cancelTicket({ id_user: user, id_booking: idBooking });
 			}
 			return null;

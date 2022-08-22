@@ -6,6 +6,8 @@ import Navbar from "@components/navbar/admin/Navbar";
 import Sidebar from "layouts/admin/Sidebar";
 import Swal from "sweetalert2";
 // import ticketingStyle from "../../styles/ticketing.module.css";
+import { hasCookie, getCookie } from "cookies-next";
+import { decryptData } from "@utils/crypto";
 
 function Ticketing(props) {
 	const [id_airplane, setId_airplane] = useState("");
@@ -395,3 +397,27 @@ function Ticketing(props) {
 }
 
 export default Ticketing;
+
+export const getServerSideProps = async ({ req }) => {
+	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
+		const user = decryptData(getCookie("datas", { req }));
+		if (user.role !== "admin") {
+			return {
+				redirect: {
+					destination: "/register",
+					permanent: true,
+				},
+			};
+		}
+
+		return {
+			props: {},
+		};
+	}
+	return {
+		redirect: {
+			destination: "/register",
+			permanent: true,
+		},
+	};
+};

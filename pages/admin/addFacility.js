@@ -6,8 +6,10 @@ import Swal from "sweetalert2";
 import Sidebar from "layouts/admin/Sidebar";
 // component
 import Navbar from "@components/navbar/admin/Navbar";
+import { hasCookie, getCookie } from "cookies-next";
+import { decryptData } from "@utils/crypto";
 
-function addFacility() {
+function addFacility(props) {
 	const [data, setData] = useState([]);
 	useEffect(() => {
 		axios.get("https://ticket-byte-v1.herokuapp.com/facility").then((res) => setData(res.data.facility));
@@ -66,7 +68,7 @@ function addFacility() {
 									<div className="card p-3 shadow">
 										<form onSubmit={handleAddFacility}>
 											<div className="row mb-4 mt-2">
-												<label for="inputClass" className="col-3 col-form-label">
+												<label htmlFor="inputClass" className="col-3 col-form-label">
 													Class
 												</label>
 												<div className="col-9">
@@ -74,7 +76,7 @@ function addFacility() {
 												</div>
 											</div>
 											<div className="row mb-4">
-												<label for="inputFacility" className="col-3 col-form-label">
+												<label htmlFor="inputFacility" className="col-3 col-form-label">
 													Facility
 												</label>
 												<div className="col-9">
@@ -120,3 +122,27 @@ function addFacility() {
 }
 
 export default addFacility;
+
+export const getServerSideProps = async ({ req }) => {
+	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
+		const user = decryptData(getCookie("datas", { req }));
+		if (user.role !== "admin") {
+			return {
+				redirect: {
+					destination: "/register",
+					permanent: true,
+				},
+			};
+		}
+
+		return {
+			props: {},
+		};
+	}
+	return {
+		redirect: {
+			destination: "/register",
+			permanent: true,
+		},
+	};
+};
