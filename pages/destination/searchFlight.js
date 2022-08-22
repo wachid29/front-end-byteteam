@@ -7,8 +7,14 @@ import { BsArrowLeftRight, BsArrowRight } from "react-icons/bs";
 // css
 import LayoutBgImg from "@components/layouts/LayoutBgImg";
 
-function SearchFlight(props) {
-	const { place } = props;
+function searchFlight() {
+	const [data, setData] = useState([]);
+	useEffect(() => {
+		axios.get("/api/place").then((res) => {
+			let location = res.data.place;
+			setData(location);
+		});
+	}, []);
 	// query param search index
 	const router = useRouter();
 	const query = router.query;
