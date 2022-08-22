@@ -36,7 +36,7 @@ export default function Login() {
 				Swal.fire({
 					icon: "success",
 					text: res?.message,
-				}).then((result) => (result.isConfirmed ? router.replace("/login") : null));
+				}).then((result) => (result.isConfirmed ? router.replace("/") : null));
 			})
 			.catch((err) =>
 				Swal.fire({

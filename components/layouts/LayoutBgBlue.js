@@ -22,7 +22,7 @@ export default function LayoutBgBlue(props) {
 							<div className="d-flex align-items-center mt-3 pb-2 mb-4 gap-5">
 								<FaAngleLeft className="text-white cursor-pointer" size={30} onClick={() => router.back()} />
 								<span className="fs-16 fw-semibold text-white">{pageTitle}</span>
-								<BsThreeDotsVertical className="ms-auto text-white cursor-pointer" size={30} />
+								{/* <BsThreeDotsVertical className="ms-auto text-white cursor-pointer" size={30} /> */}
 							</div>
 							{children}
 						</div>

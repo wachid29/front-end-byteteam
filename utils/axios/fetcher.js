@@ -13,11 +13,13 @@ const fetcher = {
 	postPhotoProfile: (data) => api.patch("/user/photo", data, multipart).then((res) => res.data),
 
 	// Ticket
+	searchTicket: (params) => api.get("/ticket/find-ticket", { params: { ...params } }).then((res) => res.data),
 	findOneticket: (id) => api.get("/ticket/find1ticket", { params: { id_ticket: id } }).then((res) => res.data.ticket[0]),
+	cancelTicket: (data) => api.patch("/booking/statuspaymentcanceled", data).then((res) => res.data),
 
 	// Booking
 	postBooking: (data) => api.post("/booking/post", data).then((res) => res.data),
-	findMyBooking: () => api.get("/booking/getall").then((res) => res.data.booking),
+	findMyBooking: (id) => api.get("booking/getbyiduser", { params: { id_user: id } }).then((res) => res.data.booking),
 	findOneBooking: (id) => api.get("/booking/getbyidbooking", { params: { id_booking: id } }).then((res) => res.data.booking[0]),
 
 	// Place

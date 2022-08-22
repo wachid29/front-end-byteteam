@@ -1,3 +1,4 @@
+import { hasCookie } from "cookies-next";
 import fetcher from "@utils/axios/fetcher";
 
 // Styles + Icons
@@ -14,7 +15,7 @@ import BookingQrCode from "@components/pages/BookingQrCode";
 
 export default function BookingDetail({ booking }) {
 	return (
-		<LayoutBgBlue title="Booking Detail - bookinging Website" pageTitle="Booking Pass">
+		<LayoutBgBlue title="Booking Detail - booking Website" pageTitle="Booking Pass">
 			<div className={container}>
 				<div className={`d-flex flex-column bg-white pb-4 ${zigzag}`}>
 					<div className="d-flex flex-column justify-content-center p-5 pb-4 gap-4">
@@ -40,13 +41,22 @@ export default function BookingDetail({ booking }) {
 	);
 }
 
-export async function getServerSideProps({ query }) {
-	const booking = await fetcher.findOneBooking(query.id);
-	const { logo } = await fetcher.findOneticket(booking?.id_ticket);
+export async function getServerSideProps({ req, query }) {
+	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
+		const booking = await fetcher.findOneBooking(query.id);
+		const { logo } = await fetcher.findOneticket(booking?.id_ticket);
+
+		return {
+			props: {
+				booking: { ...booking, logo },
+			},
+		};
+	}
 
 	return {
-		props: {
-			booking: { ...booking, logo },
+		redirect: {
+			destination: "/register",
+			permanent: true,
 		},
 	};
 }

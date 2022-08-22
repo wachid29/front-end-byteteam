@@ -1,4 +1,9 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { getCookie, hasCookie } from "cookies-next";
+import { decryptData } from "@utils/crypto";
 import fetcher from "@utils/axios/fetcher";
+import Swal from "sweetalert2";
 
 // Styles + Icons
 import { flightInfo } from "@styles/pages/FlightDetail.module.css";
@@ -14,17 +19,39 @@ import FlightFacilities from "@components/pages/FlightFacilities";
 import FlightCost from "@components/pages/FlightCost";
 
 export default function FlightDetail(props) {
-	const { ticket, child, adults } = props;
+	const { user, ticket, child, adults } = props;
+	const [isLoading, setIsLoading] = useState(false);
+	const router = useRouter();
 
 	const createBooking = () => {
-		const data = {
-			id_user: 1,
-			user_role: "customer",
-			id_ticket: ticket.id_ticket,
-			total_passenger: parseInt(child) + parseInt(adults),
-			total_payment: ticket?.price * (parseInt(child) + parseInt(adults)),
-		};
-		fetcher.postBooking(data).then((res) => console.log(res));
+		setIsLoading(true);
+		if (user) {
+			const data = {
+				id_user: user.id,
+				user_role: "customer",
+				id_ticket: ticket.id_ticket,
+				total_passenger: parseInt(child) + parseInt(adults),
+				total_payment: ticket?.price * (parseInt(child) + parseInt(adults)),
+			};
+			fetcher
+				.postBooking(data)
+				.then(() => {
+					Swal.fire({
+						icon: "success",
+						text: "Ticket Booked Successfully",
+					}).then((result) => (result.isConfirmed ? router.replace("/booking") : null));
+				})
+				.catch(() => {
+					Swal.fire({
+						icon: "error",
+						text: "Something Wrong!",
+					});
+				})
+				.finally(() => setIsLoading(false));
+		} else {
+			setIsLoading(false);
+			router.push("/register");
+		}
 	};
 
 	return (
@@ -46,19 +73,24 @@ export default function FlightDetail(props) {
 			</div>
 			<FlightFacilities facilities={ticket?.facility} />
 			<FlightCost cost={ticket?.price * (parseInt(child) + parseInt(adults))} />
-			<button className="btn btn-blue rounded-3 w-100 fw-bold py-3 mt-auto" onClick={createBooking}>
-				BOOK FLIGHT
+			<button className="btn btn-blue rounded-3 w-100 fw-bold py-3 mt-auto" onClick={createBooking} disabled={isLoading}>
+				{isLoading && <span className="spinner-border spinner-border-sm me-2"></span>}
+				{isLoading ? "Loading..." : "BOOK FLIGHT"}
 			</button>
 		</LayoutBgPlane>
 	);
 }
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({ req, query }) {
+	const user = hasCookie("datas", { req }) && hasCookie("token", { req }) ? decryptData(getCookie("datas", { req })) : null;
 	const { id, peopleChild, peopleAdult } = query;
 	const ticket = await fetcher.findOneticket(id);
 
+	console.log(user);
+
 	return {
 		props: {
+			user,
 			ticket,
 			child: peopleChild,
 			adults: peopleAdult,

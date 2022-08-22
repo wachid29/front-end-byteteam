@@ -11,7 +11,9 @@ export default function Navbar() {
 	const activeNav = (path) => (router.pathname == path ? "text-blue" : "text-gray");
 
 	return (
-		<div className="position-fixed bottom-0 mw-mobile d-flex justify-content-center align-items-center bg-white w-100 gap-3 p-3">
+		<div
+			className="position-fixed bottom-0 mw-mobile d-flex justify-content-center align-items-center bg-white w-100 gap-3 p-3"
+			style={{ zIndex: 100 }}>
 			<div className={`d-flex flex-column align-items-center w-25 cursor-pointer ${activeNav("/booking")}`} onClick={() => router.push("/booking")}>
 				<TbCalendarTime size={30} />
 				<span className="fs-10 fw-medium">My Booking</span>
