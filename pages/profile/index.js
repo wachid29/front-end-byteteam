@@ -25,8 +25,8 @@ export default function Profile(props) {
 export const getServerSideProps = async ({ req }) => {
 	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
 		const user = decryptData(getCookie("datas", { req }));
-		const userProfile = await fetcher.getProfile(user.id);
-		const city = await fetcher.findOnePlace(userProfile.id_place);
+		const userProfile = await fetcher.getProfile(user?.id);
+		const city = userProfile.id_place ? await fetcher.findOnePlace(userProfile?.id_place) : null;
 
 		return {
 			props: {

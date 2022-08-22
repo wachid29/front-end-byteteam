@@ -105,15 +105,14 @@ function searchResult() {
 					</div>
 				</div>
 				{/* card */}
-				{data.map((item) => (
+				{data.map((item, i) => (
 					<Link
+						key={i}
 						href={{
-							pathname: "/detailDestination/",
-							query: { id_ticket: item?.id_ticket, peopleChild: peopleChild, peopleAdult: peopleAdult },
+							pathname: `/flights/${item?.id_ticket}`,
+							query: { peopleChild, peopleAdult },
 						}}>
-						<div
-							key={item?.id_ticket}
-							className={`card mb-2 border-top-0 border-start-0 border-end-0 border border-bottom-4 ${styles.d_card}`}>
+						<div key={item?.id_ticket} className={`card mb-2 border-top-0 border-start-0 border-end-0 border border-bottom-4 ${styles.d_card}`}>
 							<div className="row">
 								<div className="col-8">
 									<div className="d-flex justify-content-around">

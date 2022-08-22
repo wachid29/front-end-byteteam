@@ -8,7 +8,7 @@ const fetcher = {
 	login: (data) => api.post("/auth/login", data).then((res) => res.data),
 
 	// User
-	getProfile: (id) => api.get("/user/findbyID", { params: { id } }).then((res) => res.data.user[0]),
+	getProfile: (id) => api.get(`/user/getbyid/${id}`).then((res) => res.data[0]),
 	editProfile: (data) => api.patch("/user/edit", data).then((res) => res.data),
 	postPhotoProfile: (data) => api.patch("/user/photo", data, multipart).then((res) => res.data),
 
