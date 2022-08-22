@@ -7,7 +7,7 @@ import MyBookingList from "@components/lists/MyBookingList";
 
 export default function MyBooking({ fallback }) {
 	return (
-		<LayoutNavbar title="My Booking - Ticketing Website" pageTitle="My Booking" hasChat hasNotif>
+		<LayoutNavbar title="My Booking - Ticketing Website" pageTitle="My Booking" page="mybooking" hasChat hasNotif>
 			<div className="d-flex flex-column h-100 gap-4 mb-5">
 				<SWRConfig value={{ fallback }}>
 					<MyBookingList />

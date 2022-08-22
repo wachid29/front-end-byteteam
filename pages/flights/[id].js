@@ -46,7 +46,7 @@ export default function FlightDetail(props) {
 			</div>
 			<FlightFacilities facilities={ticket?.facility} />
 			<FlightCost cost={ticket?.price * (parseInt(child) + parseInt(adults))} />
-			<button className="btn btn-blue rounded-4 w-100 fw-bold py-3 mt-auto" onClick={createBooking}>
+			<button className="btn btn-blue rounded-3 w-100 fw-bold py-3 mt-auto" onClick={createBooking}>
 				BOOK FLIGHT
 			</button>
 		</LayoutBgPlane>

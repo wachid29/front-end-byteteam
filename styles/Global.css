@@ -1,6 +1,11 @@
 /* Custom Fonts */
-* {
+*,
+.poppins {
 	font-family: "Poppins", sans-serif;
+}
+
+.lato {
+	font-family: "Lato", sans-serif;
 }
 
 /* Custom Color */
@@ -18,6 +23,19 @@
 	--brand-gray: #979797;
 	--brand-darkgray: #595959;
 	--mask: conic-gradient(from -67.5deg at bottom, #0000, #000 1deg 134deg, #0000 135deg) 50%/101.4px 100.3%;
+}
+
+/* Custom Letter Spacing */
+.ls-1 {
+	letter-spacing: 0.1em;
+}
+
+.ls-2 {
+	letter-spacing: 0.2em;
+}
+
+.ls-3 {
+	letter-spacing: 0.3em;
 }
 
 /* Custom Font Weight */
@@ -232,7 +250,13 @@
 }
 .btn-blue:hover {
 	color: white;
-	background-color: #41a4ff;
+	background-color: var(--brand-lightblue);
+	border: none;
+	box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);
+}
+.btn-blue:disabled {
+	color: white;
+	background-color: var(--brand-lightblue);
 	border: none;
 	box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);
 }
@@ -273,9 +297,40 @@
 	background-color: var(--brand-darkgray);
 }
 
+.btn-outline-blue {
+	color: var(--brand-blue);
+	background-color: white;
+	border: 1px solid var(--brand-blue);
+}
+.btn-outline-blue:focus {
+	color: white;
+	background-color: #1679d6;
+	border: 1px solid var(--brand-blue);
+}
+.btn-outline-blue:hover {
+	color: white;
+	background-color: var(--brand-blue);
+	border: 1px solid var(--brand-blue);
+}
+.btn-outline-blue:disabled {
+	color: white;
+	background-color: var(--brand-lightblue);
+	border: 1px solid var(--brand-blue);
+}
+
 /* Custom Cursor */
 .cursor-pointer {
 	cursor: pointer;
+}
+
+/* Custom Link */
+.link-blue {
+	color: var(--brand-blue);
+	text-decoration: underline;
+}
+.link-blue:hover {
+	color: var(--brand-lightblue);
+	text-decoration: underline;
 }
 
 /* Custom View Mobile */

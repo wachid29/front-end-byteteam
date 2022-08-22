@@ -1,135 +1,70 @@
-import React, { useState } from "react";
-import registerStyle from "../styles/pages/register.module.css";
-import { IoIosArrowBack } from "react-icons/io";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import axios from "axios";
-import Swal from "sweetalert2";
+import { useState } from "react";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import { useForm, FormProvider } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { RegisterSchema } from "@utils/validations";
+import fetcher from "@utils/axios/fetcher";
+import Swal from "sweetalert2";
 
-const register = () => {
-	const [fullname, setFullname] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+// Styles + Icons
+import { borderSpacer } from "@styles/components/Cards.module.css";
+
+// Components
+import LayoutAuth from "@components/layouts/LayoutAuth";
+import Input from "@components/inputs/Input";
+
+export default function Register() {
 	const [isLoading, setIsLoading] = useState(false);
+	const formOptions = { resolver: yupResolver(RegisterSchema) };
+	const methods = useForm(formOptions);
 	const router = useRouter();
 
-	const handleRegister = () => {
+	const onSubmit = (data) => {
+		const { acceptTerms, ...newUser } = { ...data, role: "customer" };
 		setIsLoading(true);
-		axios
-			.post(`https://ticket-byte-v1.herokuapp.com/auth/register`, {
-				fullname,
-				email,
-				password,
-				role: "customer",
-			})
+		fetcher
+			.register(newUser)
 			.then((res) => {
-				console.log(res);
 				Swal.fire({
 					icon: "success",
-					text: "register successfully",
+					text: res,
 				}).then((result) => (result.isConfirmed ? router.replace("/login") : null));
 			})
-			.catch((err) => {
-				console.log(err);
+			.catch((err) =>
 				Swal.fire({
 					icon: "error",
 					text: `${err?.response?.data}`,
-				});
-			})
-			.finally(() => {
-				setIsLoading(false);
-			});
+				})
+			)
+			.finally(() => setIsLoading(false));
 	};
 
 	return (
-		<>
-			<div className={registerStyle.main}>
-				<div className="container">
-					<div className="row justify-content-center">
-						<div className="col-md-4">
-							<div className="row mt-4">
-								<div className="col-4 px-3">
-									<div className={registerStyle.iconBack}>
-										<IoIosArrowBack size={32} onClick={() => router.back()} />
-									</div>
-								</div>
-								<div className="col-8 mt-1 px-4">
-									<div className={registerStyle.contentTop}>
-										<p>Continue as Guest</p>
-									</div>
-								</div>
-							</div>
-							<div className={`row mt-5 ${registerStyle.textRegister}`}>
-								<div className="col-12 mx-3">
-									<p>Register</p>
-								</div>
-							</div>
-							<form
-								onSubmit={(e) => {
-									e.preventDefault();
-									handleRegister();
-								}}>
-								<div className={`px-3 ${registerStyle.formInput}`}>
-									<input
-										className="form-control form-control-lg shadow-none mt-3"
-										type="text"
-										placeholder="Fullname"
-										onChange={(e) => setFullname(e.target.value)}
-										required
-									/>
-								</div>
-								<div className={`px-3 ${registerStyle.formInput}`}>
-									<input
-										className="form-control form-control-lg shadow-none mt-3"
-										type="email"
-										placeholder="Email"
-										onChange={(e) => setEmail(e.target.value)}
-										required
-									/>
-								</div>
-								<div className={`input-group px-3 ${registerStyle.inputGroup}`}>
-									<input
-										type="password"
-										className="form-control form-control-lg shadow-none mt-4"
-										id="password"
-										placeholder="Password"
-										onChange={(e) => setPassword(e.target.value)}
-										required
-									/>
-									<span className="input-group-text shadow-none mt-4" id="basic-addon1">
-										<MdOutlineRemoveRedEye size={25} color="#2395FF" />
-									</span>
-								</div>
-								<div className={`d-grid gap-2 mt-4 px-3 ${registerStyle.btnRegister}`}>
-									<button className="btn btn-lg" type="submit" disabled={isLoading}>
-										{isLoading ? "Loading..." : "Sign Up"}
-									</button>
-								</div>
-							</form>
-							<div className={`form-check mt-3 mx-3 ${registerStyle.checkBox}`}>
-								<input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-								<label className="form-check-label" for="flexCheckDefault">
-									Accept terms and condition
-								</label>
-							</div>
-							<hr className="mt-4 mx-3" />
-							<div className={`text-center ${registerStyle.registerFooter}`}>
-								<p className="mt-4 mb-2">Already have an account?</p>
-							</div>
-							<div className={`d-grid gap-2 mt-4 px-3 ${registerStyle.btnRegister}`}>
-								<Link href="/login" passHref>
-									<button className="btn btn-lg" type="button">
-										Sign In
-									</button>
-								</Link>
-							</div>
+		<LayoutAuth title="Register - Ticketing Website" pageTitle="Register">
+			<FormProvider {...methods}>
+				<form onSubmit={methods.handleSubmit(onSubmit)}>
+					<div className="d-flex flex-column align-items-center py-4 gap-4">
+						<Input type="text" name="fullname" placeholder="Full Name" />
+						<Input type="email" name="email" placeholder="Email" />
+						<Input type="password" name="password" placeholder="Password" />
+						<button className="btn btn-blue rounded-3 w-100 fs-18 fw-bold py-3" type="submit" disabled={isLoading}>
+							{isLoading && <span className="spinner-border spinner-border-sm me-2"></span>}
+							{isLoading ? "Loading..." : "Sign Up"}
+						</button>
+						<Input type="checkbox" name="acceptTerms" placeholder="Accept terms and condition" />
+						<div className={`w-75 ${borderSpacer}`}></div>
+						<div className="text-center">
+							<span className="lato fs-14 text-darkgray">Already have an account?</span>
 						</div>
+						<NextLink href="/login">
+							<button className="btn btn-outline-blue rounded-3 w-100 fs-18 fw-bold py-3" type="button">
+								Sign In
+							</button>
+						</NextLink>
 					</div>
-				</div>
-			</div>
-		</>
+				</form>
+			</FormProvider>
+		</LayoutAuth>
 	);
-};
-
-export default register;
+}

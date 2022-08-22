@@ -1,0 +1,9 @@
+.formInput input,
+.formInput select,
+.inputGroup input,
+.inputGroup span {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-radius: 0;
+}

@@ -1,0 +1,5 @@
+.profileImg {
+	width: 140px;
+	height: 140px;
+	border: 5px solid var(--brand-blue);
+}
