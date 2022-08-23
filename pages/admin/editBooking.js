@@ -23,8 +23,8 @@ import { decryptData } from "@utils/crypto";
 const editBooking = (props) => {
 	const { query } = props;
 	const [Datas, setDatas] = useState([]);
-	const [Update, setUpdate] = useState("");
-	const [IdBooking, setIdBooking] = useState("");
+	const [Update, setUpdate] = useState(Object.keys(query).length !== 0 ? query.status_payment : "");
+	const [IdBooking, setIdBooking] = useState(Object.keys(query).length !== 0 ? parseInt(query.id_booking) : "");
 	// const [place, setPlace] = useState([]);
 	// const dataUser = useContext(ProfileContext);
 	// const [titleImage, setTitleImage] = useState("Edit Profile Image");
@@ -44,12 +44,8 @@ const editBooking = (props) => {
 			})
 			.catch((err) => {
 				console.log(err);
-			})
-			.finally(() => {
-				setUpdate(Object.keys(query).length !== 0 ? query.status_payment : "");
-				setIdBooking(Object.keys(query).length !== 0 ? parseInt(query.id_booking) : "");
 			});
-	}, [query]);
+	}, [Datas]);
 
 	const handleStatusPayment = (e) => {
 		e.preventDefault();
@@ -86,6 +82,8 @@ const editBooking = (props) => {
 				})
 				.finally(() => {
 					setIsLoading(false);
+					setUpdate("");
+					setIdBooking("");
 				});
 		} else {
 			axios
@@ -113,6 +111,8 @@ const editBooking = (props) => {
 				})
 				.finally(() => {
 					setIsLoading(false);
+					setUpdate("");
+					setIdBooking("");
 				});
 		}
 	};
