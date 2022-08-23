@@ -45,7 +45,7 @@ export default function EditProfile(props) {
 			delete newData.email;
 		}
 
-		if (data.phoneNumber.toString() === profile.phone_number.toString()) {
+		if (data.phoneNumber?.toString() === profile.phone_number?.toString()) {
 			delete newData.phone_number;
 		}
 
