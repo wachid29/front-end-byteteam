@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterSchema } from "@utils/validations";
+import { hasCookie } from "cookies-next";
 import fetcher from "@utils/axios/fetcher";
 import Swal from "sweetalert2";
 
@@ -14,7 +15,7 @@ import { borderSpacer } from "@styles/components/Cards.module.css";
 import LayoutAuth from "@components/layouts/LayoutAuth";
 import Input from "@components/inputs/Input";
 
-export default function Register() {
+export default function Register(props) {
 	const [isLoading, setIsLoading] = useState(false);
 	const formOptions = { resolver: yupResolver(RegisterSchema) };
 	const methods = useForm(formOptions);
@@ -67,4 +68,19 @@ export default function Register() {
 			</FormProvider>
 		</LayoutAuth>
 	);
+}
+
+export async function getServerSideProps({ req }) {
+	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
+		return {
+			redirect: {
+				destination: "/",
+				permanent: true,
+			},
+		};
+	}
+
+	return {
+		props: {},
+	};
 }

@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema } from "@utils/validations";
 import fetcher from "@utils/axios/fetcher";
 import cookiesOptions from "@utils/cookies";
-import { setCookie } from "cookies-next";
+import { hasCookie, setCookie } from "cookies-next";
 import { encryptData } from "@utils/crypto";
 import Swal from "sweetalert2";
 
@@ -88,4 +88,19 @@ export default function Login() {
 			</FormProvider>
 		</LayoutAuth>
 	);
+}
+
+export async function getServerSideProps({ req }) {
+	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
+		return {
+			redirect: {
+				destination: "/",
+				permanent: true,
+			},
+		};
+	}
+
+	return {
+		props: {},
+	};
 }
