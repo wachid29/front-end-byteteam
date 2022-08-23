@@ -21,7 +21,7 @@ export default function ProfileMenu() {
 			if (result.isConfirmed) {
 				deleteCookie("token");
 				deleteCookie("datas");
-				return router.push("/login");
+				return router.push("/register");
 			}
 			return null;
 		});
