@@ -8,19 +8,20 @@ import { getDatabase } from "firebase/database";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-	apiKey: "AIzaSyAZ4u4TdvkwPuhJcKejZlSWr1MI3384Cns",
-	authDomain: "realtime-database-byte.firebaseapp.com",
-	databaseURL: "https://realtime-database-byte-default-rtdb.asia-southeast1.firebasedatabase.app",
-	projectId: "realtime-database-byte",
-	storageBucket: "realtime-database-byte.appspot.com",
-	messagingSenderId: "43674647260",
-	appId: "1:43674647260:web:28214fd8750f72add11219",
-	measurementId: "G-D8RVD2LDTH",
+	apiKey: "AIzaSyAld0z5ude__QZF932uFpSnPgkYbqxb3Sw",
+	authDomain: "test-database-82bb1.firebaseapp.com",
+	databaseURL: "https://test-database-82bb1-default-rtdb.asia-southeast1.firebasedatabase.app",
+	projectId: "test-database-82bb1",
+	storageBucket: "test-database-82bb1.appspot.com",
+	messagingSenderId: "22316489493",
+	appId: "1:22316489493:web:4b26c8a6b3b2d5aad8671c",
+	measurementId: "G-B1NW63JSF0",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-//const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
+
 const database = getDatabase(app);
 
 export { database };

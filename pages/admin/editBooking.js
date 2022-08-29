@@ -20,11 +20,16 @@ var url = "https://ticket-byte-v1.herokuapp.com";
 import { hasCookie, getCookie } from "cookies-next";
 import { decryptData } from "@utils/crypto";
 
+//firebase
+import { database } from "../../firebase";
+import { ref, set } from "firebase/database";
+
 const editBooking = (props) => {
 	const { query } = props;
 	const [Datas, setDatas] = useState([]);
 	const [Update, setUpdate] = useState(Object.keys(query).length !== 0 ? query.status_payment : "");
 	const [IdBooking, setIdBooking] = useState(Object.keys(query).length !== 0 ? parseInt(query.id_booking) : "");
+	// const [bookingDetail, setBookingDetail] = useState(null);
 	// const [place, setPlace] = useState([]);
 	// const dataUser = useContext(ProfileContext);
 	// const [titleImage, setTitleImage] = useState("Edit Profile Image");
@@ -47,7 +52,7 @@ const editBooking = (props) => {
 			});
 	}, [Datas]);
 
-	const handleStatusPayment = (e) => {
+	const handleStatusPayment = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
 
@@ -57,6 +62,15 @@ const editBooking = (props) => {
 				text: `Input "canceled" or "issue" or "boarding" for update status_payment, (id_booking: ${IdBooking})`,
 			});
 		}
+
+		const bookingDetail = await axios
+			.get(`${url}/booking/getbyidbooking?id_booking=${IdBooking}`)
+			.then((res) => {
+				return res?.data?.booking[0];
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 
 		if (Update == "canceled") {
 			axios
@@ -97,6 +111,15 @@ const editBooking = (props) => {
 					[]
 				)
 				.then((res) => {
+					console.log(bookingDetail);
+					const starCountRef = ref(database, `notif/${bookingDetail?.id_user}/${new Date().getTime()}`);
+					set(starCountRef, {
+						title: "issue",
+						notif: `pembayaran berhasil`,
+						time: new Date().getTime(),
+						user_id: bookingDetail?.id_user,
+						status_notif: "sended",
+					});
 					Swal.fire({
 						icon: "success",
 						text: res?.data,

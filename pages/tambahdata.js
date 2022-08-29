@@ -1,19 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { database } from "../firebase";
 import { ref, set } from "firebase/database";
 
 function Tambahdata() {
-	React.useEffect(() => {
-		const starCountRef = ref(database, `notification/2/${new Date().getTime()}`);
+	let id_user = 3;
+	const [message, setMessage] = useState("");
+	const [succes, setSucces] = useState(false);
+
+	const handleAddData = () => {
+		const starCountRef = ref(database, `notif/${id_user}/${new Date().getTime()}`);
 		set(starCountRef, {
-			title: "Booking Succes",
-			notif: "Lorem Ipsum2",
+			title: "Ticket Booked",
+			notif: "Selamat, \n Ticket Pesawat Lion Air CGK - SUB berhasil dibooking",
 			time: new Date().getTime(),
 			user_id: 3,
 			status_notif: "sended",
 		});
-	}, []);
-	return <></>;
+		if (starCountRef) {
+			setSucces(true);
+			setMessage("data berhasil ditambah");
+		}
+	};
+	return (
+		<>
+			<div className="mt-5">
+				{succes ? (
+					<div className="alert alert-warning" role="alert">
+						{message}
+					</div>
+				) : null}
+				<button type="button" className="btn btn-primary" onClick={handleAddData}>
+					Add Data
+				</button>
+			</div>
+		</>
+	);
 }
 
 export default Tambahdata;
