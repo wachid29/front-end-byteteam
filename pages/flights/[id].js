@@ -18,6 +18,10 @@ import FlightPassanger from "@components/pages/FlightPassanger";
 import FlightFacilities from "@components/pages/FlightFacilities";
 import FlightCost from "@components/pages/FlightCost";
 
+//test firebase
+import { database } from "../../firebase";
+import { ref, set } from "firebase/database";
+
 export default function FlightDetail(props) {
 	const { user, ticket, child, adults } = props;
 	const [isLoading, setIsLoading] = useState(false);
@@ -36,12 +40,23 @@ export default function FlightDetail(props) {
 			fetcher
 				.postBooking(data)
 				.then(() => {
+					//tambahan firebase
+					const starCountRef = ref(database, `notif/${user.id}/${new Date().getTime()}`);
+					set(starCountRef, {
+						title: "Ticket Booked",
+						notif: `Selamat, tiket berhasil dibooking dengan id_ticket : ${ticket.id_ticket}`,
+						time: new Date().getTime(),
+						user_id: user.id,
+						status_notif: "sended",
+					});
+					//akhir tabahan firebase
 					Swal.fire({
 						icon: "success",
 						text: "Ticket Booked Successfully",
 					}).then((result) => (result.isConfirmed ? router.replace("/booking") : null));
 				})
-				.catch(() => {
+				.catch((error) => {
+					console.log("error", error);
 					Swal.fire({
 						icon: "error",
 						text: "Something Wrong!",

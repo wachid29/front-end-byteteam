@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+// /* eslint-disable react-hooks/rules-of-hooks */
 import axios from "axios";
 import Swal from "sweetalert2";
 import React, { useState, useContext, useEffect } from "react";
@@ -9,29 +9,47 @@ import Navbar from "@components/navbar/admin/Navbar";
 // import imgPlane from "../public/images/plane.png";
 
 // Radio Button untuk Update status booking
-let statusPayment = ["issue", "boarding", "canceled"];
+let statusPayment = ["issue", "boarding"];
 // Radio Button untuk filtering by status booking
 let allStatusPayment = ["all", "waiting", "issue", "boarding", "canceled"];
 
 // PERSIAPAN UNTUK ENV DOMAIN
-// var url = "https://ticket-byte-v1.herokuapp.com";
-var url = 'http://localhost:8000';
+var url = "https://ticket-byte-v1.herokuapp.com";
+// var url = "http://localhost:8000";
+
+//firebase
+import { database } from "../../firebase";
+import { ref, set } from "firebase/database";
 
 import BookingStatus from "@components/pages/BookingStatus";
+import { hasCookie, getCookie } from "cookies-next";
+import { decryptData } from "@utils/crypto";
 
-// import { hasCookie, getCookie } from "cookies-next";
-// import { decryptData } from "@utils/crypto";
-
-// const editBooking = (props) => {
-const editBooking = () => {
-	// const { query } = props;
+const editBooking = (props) => {
+	const { query } = props;
 	const [Datas, setDatas] = useState([]);
+	const [Update, setUpdate] = useState(Object.keys(query).length !== 0 ? query.status_payment : "");
+	const [IdBooking, setIdBooking] = useState(Object.keys(query).length !== 0 ? parseInt(query.id_booking) : "");
+	const [isLoading, setIsLoading] = useState(false);
+	// const [bookingDetail, setBookingDetail] = useState(null);
+	// const [place, setPlace] = useState([]);
+	// const dataUser = useContext(ProfileContext);
+	// const [titleImage, setTitleImage] = useState("Edit Profile Image");
+	// const [image, setImage] = useState({});
+	// const [email, setEmail] = useState("");
+	// const [phoneNumber, setPhoneNumber] = useState();
+	// const [fullname, setFullname] = useState("");
+	// const [idPlace, setIdPlace] = useState();
+
+	// const editBooking = (props) => {
+
+	// const { query } = props;
+	// const [Datas, setDatas] = useState([]);
 	// const [Update, setUpdate] = useState(Object.keys(query).length !== 0 ? query.status_payment : "");
 	// const [IdBooking, setIdBooking] = useState(Object.keys(query).length !== 0 ? parseInt(query.id_booking) : "");
 	// const [radioClass, setRadioClass] = useState({ classFlight: "" });
-	const [isLoading, setIsLoading] = useState(false);
-	const [IdBooking, setIdBooking] = useState("");
-	const [Update, setUpdate] = useState("");
+	// const [IdBooking, setIdBooking] = useState("");
+	// const [Update, setUpdate] = useState("");
 	const [FilterByStatus, setFilterByStatus] = useState("all");
 	const formatter = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 });
 
@@ -45,70 +63,91 @@ const editBooking = () => {
 				}, [])
 				.catch(() => {
 					// console.log(err.response.data);
-					setDatas([{
-						id_booking: null,
-						id_ticket: null,
-						id_user: null,
-						total_passenger: null,
-						total_payment: null,
-						status_payment: "-",
-					}])
+					setDatas([
+						{
+							id_booking: null,
+							id_ticket: null,
+							id_user: null,
+							total_passenger: null,
+							total_payment: null,
+							status_payment: "-",
+						},
+					]);
 				}, []);
 		});
 	} else {
 		useEffect(() => {
 			axios
 				.get(`${url}/booking/getbystatus?status_payment=${FilterByStatus}`)
-				.then((res) => {
-					// console.log(res?.data.booking);
-					setDatas(res?.data.booking);
-				}, [FilterByStatus])
+				.then(
+					(res) => {
+						// console.log(res?.data.booking);
+						setDatas(res?.data.booking);
+					},
+					[FilterByStatus]
+				)
 				.catch(() => {
 					// console.log(err.response.data);
-					setDatas([{
-						id_booking: null,
-						id_ticket: null,
-						id_user: null,
-						total_passenger: null,
-						total_payment: null,
-						status_payment: "-",
-					}])
+					setDatas([
+						{
+							id_booking: null,
+							id_ticket: null,
+							id_user: null,
+							total_passenger: null,
+							total_payment: null,
+							status_payment: "-",
+						},
+					]);
 				}, [FilterByStatus]);
 		});
 	}
 
-	// FORM UPDATE STATUS
-	const handleStatusPayment = (e) => {
+	const handleStatusPayment = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
-		
-		console.log(Update);
-		if (Update == "canceled") {
-			axios
-				.patch(
-					`${url}/booking/statuspaymentcanceled`,
-					{
-						id_booking: IdBooking,
-					},
-					[]
-				)
-				.then((res) => {
-					Swal.fire({
-						icon: "success",
-						text: res?.data,
-					})
-				})
-				.catch((err) => {
-					console.log(err);
-					Swal.fire({
-						icon: "error",
-						text: `${err?.response?.data}`,
-					})
-				})
-				.finally(() => {
-					setIsLoading(false);
-				});
-		} else {
+
+		if (Update == "" && Update != "canceled" && Update != "issue" && Update != "boarding") {
+			Swal.fire({
+				icon: "error",
+				text: `Input "canceled" or "issue" or "boarding" for update status_payment, (id_booking: ${IdBooking})`,
+			});
+		}
+
+		const bookingDetail = await axios
+			.get(`${url}/booking/getbyidbooking?id_booking=${IdBooking}`)
+			.then((res) => {
+				return res?.data?.booking[0];
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		if (Update) {
+			// axios
+			// 	.patch(
+			// 		`${url}/booking/statuspaymentcanceled`,
+			// 		{
+			// 			id_booking: IdBooking,
+			// 		},
+			// 		[]
+			// 	)
+			// 	.then((res) => {
+			// 		Swal.fire({
+			// 			icon: "success",
+			// 			text: res?.data,
+			// 		});
+			// 	})
+			// 	.catch((err) => {
+			// 		console.log(err);
+			// 		Swal.fire({
+			// 			icon: "error",
+			// 			text: `${err?.response?.data}`,
+			// 		});
+			// 	})
+			// 	.finally(() => {
+			// 		setIsLoading(false);
+			// 	});
+			// } else {
 			axios
 				.patch(
 					`${url}/booking/statuspaymentforadmin`,
@@ -120,17 +159,26 @@ const editBooking = () => {
 					[]
 				)
 				.then((res) => {
+					console.log(bookingDetail);
+					const starCountRef = ref(database, `notif/${bookingDetail?.id_user}/${new Date().getTime()}`);
+					set(starCountRef, {
+						title: "issue",
+						notif: `pembayaran berhasil`,
+						time: new Date().getTime(),
+						user_id: bookingDetail?.id_user,
+						status_notif: "sended",
+					});
 					Swal.fire({
 						icon: "success",
 						text: res?.data,
-					})
+					});
 				})
 				.catch((err) => {
 					console.log(err);
 					Swal.fire({
 						icon: "error",
 						text: `${err?.response?.data}`,
-					})
+					});
 				})
 				.finally(() => {
 					setIsLoading(false);
@@ -145,14 +193,12 @@ const editBooking = () => {
 				<div className="row">
 					<Sidebar>
 						<main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-
 							<div className="pt-3 pb-2 mb-5 border-bottom">
 								<h1 className="h2">Edit Booking</h1>
 							</div>
-							
+
 							{/* MAIN */}
 							<div className="row">
-							
 								{/* FORM UPDATE */}
 								<div className="col-3">
 									<div className="card p-3 shadow">
@@ -176,7 +222,7 @@ const editBooking = () => {
 													onChange={(e) => setIdBooking(e.target.value)}
 												/>
 											</div>
-											
+
 											{/* Radio button di Form ganti status payment */}
 											<div className="my-4">
 												<div>
@@ -210,7 +256,6 @@ const editBooking = () => {
 
 								{/* PERLIHATKAN STATUS BOOKING */}
 								<div className="col-9">
-
 									{/* Radio button untuk filtering berdasarkan status payment */}
 									<div className="pb-2">
 										<label htmlFor="formGroupExampleInput" className="form-label">
@@ -235,7 +280,6 @@ const editBooking = () => {
 										))}
 									</div>
 
-
 									<table className="table table-hover">
 										<thead className="table-dark">
 											<tr>
@@ -251,7 +295,7 @@ const editBooking = () => {
 										<tbody>
 											{Datas.map((data, index) => (
 												<tr key={data.id_booking}>
-													<td>{(index + 1)}</td>
+													<td>{index + 1}</td>
 													<td>{data.id_booking}</td>
 													<td>{data.id_ticket}</td>
 													<td>{data.id_user}</td>
@@ -277,26 +321,26 @@ const editBooking = () => {
 
 export default editBooking;
 
-// export const getServerSideProps = async ({ req, query }) => {
-// 	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
-// 		const user = decryptData(getCookie("datas", { req }));
-// 		if (user.role !== "admin") {
-// 			return {
-// 				redirect: {
-// 					destination: "/register",
-// 					permanent: true,
-// 				},
-// 			};
-// 		}
+export const getServerSideProps = async ({ req, query }) => {
+	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
+		const user = decryptData(getCookie("datas", { req }));
+		if (user.role !== "admin") {
+			return {
+				redirect: {
+					destination: "/register",
+					permanent: true,
+				},
+			};
+		}
 
-// 		return {
-// 			props: { query },
-// 		};
-// 	}
-// 	return {
-// 		redirect: {
-// 			destination: "/register",
-// 			permanent: true,
-// 		},
-// 	};
-// };
+		return {
+			props: { query },
+		};
+	}
+	return {
+		redirect: {
+			destination: "/register",
+			permanent: true,
+		},
+	};
+};
