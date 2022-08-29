@@ -160,14 +160,25 @@ const editBooking = (props) => {
 				)
 				.then((res) => {
 					console.log(bookingDetail);
-					const starCountRef = ref(database, `notif/${bookingDetail?.id_user}/${new Date().getTime()}`);
-					set(starCountRef, {
-						title: "issue",
-						notif: `pembayaran berhasil`,
-						time: new Date().getTime(),
-						user_id: bookingDetail?.id_user,
-						status_notif: "sended",
-					});
+					if (Update === "issue") {
+						const starCountRef = ref(database, `notif/${bookingDetail?.id_user}/${new Date().getTime()}`);
+						set(starCountRef, {
+							title: "payment sucess",
+							notif: `pembayaran berhasil`,
+							time: new Date().getTime(),
+							user_id: bookingDetail?.id_user,
+							status_notif: "sended",
+						});
+					} else if (Update === "boarding") {
+						const starCountRef = ref(database, `notif/${bookingDetail?.id_user}/${new Date().getTime()}`);
+						set(starCountRef, {
+							title: "ticket has been used",
+							notif: `semoga perjalan anda menyenangkan, sampai jumpa kembali`,
+							time: new Date().getTime(),
+							user_id: bookingDetail?.id_user,
+							status_notif: "sended",
+						});
+					}
 					Swal.fire({
 						icon: "success",
 						text: res?.data,
