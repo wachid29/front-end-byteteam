@@ -25,17 +25,17 @@ import chatStyle from "../styles/chat.module.css";
 import Link from "next/link";
 import { MdArrowBackIos } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
+
 function Chat() {
 	return (
 		<>
 			<div className={chatStyle.main}>
-				<div className="d-flex justify-content-between align-items-center mt-4 mb-4">
-					<MdArrowBackIos className={chatStyle.backArrow} />
-					<Link href="/editProfile" passHref>
-						<a>Filter</a>
+				<div className="d-flex justify-content-between align-items-center mt-4 mb-2">
+					<Link href="/" passHref>
+						<MdArrowBackIos className={chatStyle.backArrow} />
 					</Link>
 				</div>
-				<h2 className="mb-3">Chat</h2>
+				<h2 className="mb-2">Chat</h2>
 				<div className="mb-4">
 					<form className="input-group mb-3">
 						<span className={`${chatStyle.icon} input-group-text bg-light`} id="basic-addon1">
@@ -44,24 +44,26 @@ function Chat() {
 						<input type="text" className={`${chatStyle.form} form-control bg-light`} placeholder="Type your message..." required />
 					</form>
 				</div>
-				<div className="card d-flex justify-content-center">
-					<div className="row mb-2">
-						<div className="col-3">
-							<div className="card mb-3" style={{ borderRadius: "15px" }}>
-								<img
-									src="/images/photo_profile.png"
-									className="card-img-bottom"
-									alt="photo profile"
-									width="50px"
-									height="70px"
-									style={{ borderRadius: "15px" }}
-								/>
+				<div className="container-fluid pt-3" style={{ borderTop: "0.5px solid black", borderBottom: "0.5px solid black" }}>
+					<Link href={`/roomChat/${encodeURIComponent(1)}`} passHref>
+						<div className="row mb-2">
+							<div className="col-3">
+								<div className="card mb-3 d-flex align-items-center" style={{ borderRadius: "10px", border: "2px solid black" }}>
+									<img
+										src="/images/grup_chat.png"
+										className="card-img-bottom"
+										alt="photo profile"
+										width="50px"
+										height="70px"
+										style={{ borderRadius: "15px" }}
+									/>
+								</div>
+							</div>
+							<div className="col-6 pt-1">
+								<h3>Group Chat 1</h3>
 							</div>
 						</div>
-						<div className="col-6 pt-1">
-							<h5>Group Chat 1</h5>
-						</div>
-					</div>
+					</Link>
 				</div>
 			</div>
 		</>
