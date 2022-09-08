@@ -16,9 +16,9 @@ function LayoutChatting(props) {
 				<div style={{ background: "#2395FF", position: "fixed", width: "100%" }}>
 					<div className="d-flex " style={{ justifyContent: "space-between", padding: "10px 20px 5px 10px" }}>
 						<Link href="/chat" passHref>
-							<MdArrowBackIos className={chatStyle.backArrow} />
+							<MdArrowBackIos className={chatStyle.backArrow} style={{ color: "#FFFFFF" }} />
 						</Link>
-						<h4>ROOM CHAT 1</h4>
+						<h4 style={{ color: "#FFFFFF" }}>ROOM CHAT 1</h4>
 						<div></div>
 					</div>
 				</div>

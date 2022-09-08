@@ -59,8 +59,9 @@ function Chat() {
 									/>
 								</div>
 							</div>
-							<div className="col-6 pt-1">
-								<h3>Group Chat 1</h3>
+							<div className="col-9 ">
+								<h4>Group Chat 1</h4>
+								<small>Group Diskusi Development Aplikasi Ticketing</small>
 							</div>
 						</div>
 					</Link>

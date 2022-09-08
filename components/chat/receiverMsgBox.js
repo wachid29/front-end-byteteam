@@ -18,12 +18,12 @@ export default function receiverMsgBox(props) {
 						color: "#FFFFFF",
 						boxShadow: "0px 4px 4px rgba(0,0,0,0.1",
 					}}>
-					<div>
+					<span>
 						<b>{props?.name}</b>
-					</div>
-					<div>
+					</span>
+					<span>
 						<p>{props?.message}</p>
-					</div>
+					</span>
 					<div style={{ display: "flex", justifyContent: "flex-end", gap: "5px" }}>
 						<small style={{ fontSize: "10px" }}>{moment(props?.message_time).format("HH:mm")}</small>
 						{props?.message_notif == "sended" ? (
