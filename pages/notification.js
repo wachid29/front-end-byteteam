@@ -37,6 +37,7 @@ function Notification(props) {
 
 	const [notification, setNotification] = useState([]);
 	const [keys, setkeys] = useState([]);
+	const [empty, setEmpty] = useState();
 
 	React.useEffect(() => {
 		const starCountRef = ref(database, `notif/${user.id}`);
@@ -45,7 +46,7 @@ function Notification(props) {
 			if (data && typeof data == "object") {
 				setNotification(data);
 				setkeys(Object.keys(data));
-			}
+			} else if (data == null || undefined) setEmpty(" - Notifikasi tidak ditemukan");
 		});
 	}, []);
 
@@ -63,6 +64,7 @@ function Notification(props) {
 					</Link>
 				</div>
 				<h2 className="mb-4">Notifications</h2>
+				<h3>{empty}</h3>
 				{keys?.reverse().map((item) => {
 					let current = notification[item];
 
@@ -77,7 +79,6 @@ export const getServerSideProps = async ({ req }) => {
 	if (hasCookie("token", { req }) && hasCookie("datas", { req })) {
 		const user = decryptData(getCookie("datas", { req }));
 		const userProfile = await fetcher.getProfile(user?.id);
-
 		return {
 			props: {
 				user: userProfile,
