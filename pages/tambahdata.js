@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { database } from "../firebase";
 import { ref, set } from "firebase/database";
-
+//test
 function Tambahdata() {
 	let id_user = 3;
 	const [message, setMessage] = useState("");
